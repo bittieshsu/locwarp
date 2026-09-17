@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import asyncio
 import logging
 import math
 
@@ -124,72 +125,126 @@ class FlowerHandler:
             pre_wait, post_wait, "teleport" if teleport else "walk", profile_name,
         )
 
-        total_flowers = len(waypoints)
-        for r in range(rounds):
+        class _PushFailed(Exception):
+            """A route leg gave up on repeated push failures."""
+
+        async def _walk(coords: list[Coordinate]) -> None:
+            engine._user_waypoints = []
+            engine._user_waypoint_next = 0
+            await engine._move_along_route(coords, _pick_profile())
+            if engine._route_push_failed and not engine._stop_event.is_set():
+                raise _PushFailed()
+
+        async def _visit(idx: int, wp: Coordinate) -> bool:
+            """Run one flower. Returns True when the mode should stop."""
+            # ── Pre-move wait ──
+            if pre_wait > 0:
+                if await jump_wait(engine, pre_wait, source="flower"):
+                    return True
             if engine._stop_event.is_set():
+                return True
+
+            # ── Travel to the flower ──
+            if teleport or engine.current_position is None:
+                await engine._set_position(wp.lat, wp.lng)
+                await engine._emit("position_update", {
+                    "lat": wp.lat, "lng": wp.lng,
+                    "speed_mps": 0.0,
+                    "progress": 0.0,
+                    "distance_remaining": 0.0,
+                    "distance_traveled": engine.distance_traveled,
+                    "eta_seconds": 0.0,
+                })
+            else:
+                try:
+                    route_data = await engine.route_service.get_route(
+                        engine.current_position.lat, engine.current_position.lng,
+                        wp.lat, wp.lng,
+                        profile=osrm_profile,
+                        force_straight=straight_line,
+                        engine=route_engine,
+                    )
+                    coords = [Coordinate(lat=pt[0], lng=pt[1]) for pt in route_data["coords"]]
+                except Exception:
+                    logger.warning("Flower: route to flower %d failed; teleporting", idx + 1)
+                    coords = [wp]
+                if len(coords) >= 2:
+                    await _walk(coords)
+                else:
+                    await engine._set_position(wp.lat, wp.lng)
+            if engine._stop_event.is_set():
+                return True
+
+            # ── Post-arrival wait ──
+            if post_wait > 0:
+                if await jump_wait(engine, post_wait, source="flower"):
+                    return True
+            if engine._stop_event.is_set():
+                return True
+
+            # ── Walk the circle(s) ──
+            # The circle is ALWAYS walked (interpolated), even when
+            # teleport is on. The teleport toggle only governs how the
+            # device reaches the flower; circling it is on-foot so the
+            # game registers the loop. `segments` sets the polygon
+            # smoothness (more = rounder, fewer = 省座標).
+            pts = _circle_points(wp, radius_m, segments)
+            await _walk(_circle_path(wp, pts, circles))
+            return engine._stop_event.is_set()
+
+        # Connection drops (screen lock, WiFi blip, DVT channel reset) must
+        # not skip flowers or kill the run: retry the same flower with
+        # backoff, mirroring random walk's retry budget.
+        max_conn_errors = 60
+
+        total_flowers = len(waypoints)
+        aborted = False
+        for r in range(rounds):
+            if aborted or engine._stop_event.is_set():
                 break
             for idx, wp in enumerate(waypoints):
                 if engine._stop_event.is_set():
                     break
 
-                # ── Pre-move wait ──
-                if pre_wait > 0:
-                    if await jump_wait(engine, pre_wait, source="flower"):
-                        break
-                if engine._stop_event.is_set():
-                    break
-
-                # ── Travel to the flower ──
-                if teleport or engine.current_position is None:
-                    await engine._set_position(wp.lat, wp.lng)
-                    await engine._emit("position_update", {
-                        "lat": wp.lat, "lng": wp.lng,
-                        "speed_mps": 0.0,
-                        "progress": 0.0,
-                        "distance_remaining": 0.0,
-                        "distance_traveled": engine.distance_traveled,
-                        "eta_seconds": 0.0,
-                    })
-                else:
+                conn_errors = 0
+                stopped = False
+                while True:
                     try:
-                        route_data = await engine.route_service.get_route(
-                            engine.current_position.lat, engine.current_position.lng,
-                            wp.lat, wp.lng,
-                            profile=osrm_profile,
-                            force_straight=straight_line,
-                            engine=route_engine,
-                        )
-                        coords = [Coordinate(lat=pt[0], lng=pt[1]) for pt in route_data["coords"]]
-                    except Exception:
-                        logger.warning("Flower: route to flower %d failed; teleporting", idx + 1)
-                        coords = [wp]
-                    if len(coords) >= 2:
-                        engine._user_waypoints = []
-                        engine._user_waypoint_next = 0
-                        await engine._move_along_route(coords, _pick_profile())
-                    else:
-                        await engine._set_position(wp.lat, wp.lng)
-                if engine._stop_event.is_set():
-                    break
-
-                # ── Post-arrival wait ──
-                if post_wait > 0:
-                    if await jump_wait(engine, post_wait, source="flower"):
+                        stopped = await _visit(idx, wp)
                         break
-                if engine._stop_event.is_set():
+                    except asyncio.CancelledError:
+                        raise
+                    except Exception as exc:
+                        conn_errors += 1
+                        backoff = min(5.0 * (2 ** min(conn_errors - 1, 5)), 30.0)
+                        logger.warning(
+                            "Flower %d: push failed (%s), retry %d/%d in %.0fs",
+                            idx + 1, exc.__class__.__name__,
+                            conn_errors, max_conn_errors, backoff,
+                        )
+                        if conn_errors >= max_conn_errors:
+                            logger.error(
+                                "Flower: device unreachable after %d attempts, stopping",
+                                conn_errors,
+                            )
+                            stopped = True
+                            break
+                        await engine._emit("connection_lost", {
+                            "retry": conn_errors,
+                            "max_retries": max_conn_errors,
+                            "next_retry_seconds": backoff,
+                        })
+                        try:
+                            await asyncio.wait_for(
+                                engine._stop_event.wait(), timeout=backoff,
+                            )
+                            stopped = True
+                            break
+                        except asyncio.TimeoutError:
+                            pass
+                if stopped:
+                    aborted = True
                     break
-
-                # ── Walk the circle(s) ──
-                # The circle is ALWAYS walked (interpolated), even when
-                # teleport is on. The teleport toggle only governs how the
-                # device reaches the flower; circling it is on-foot so the
-                # game registers the loop. `segments` sets the polygon
-                # smoothness (more = rounder, fewer = 省座標).
-                pts = _circle_points(wp, radius_m, segments)
-                seq = _circle_path(wp, pts, circles)
-                engine._user_waypoints = []
-                engine._user_waypoint_next = 0
-                await engine._move_along_route(seq, _pick_profile())
 
                 await engine._emit("flower_progress", {
                     "current_index": idx,
@@ -201,7 +256,7 @@ class FlowerHandler:
                 if engine._stop_event.is_set():
                     break
 
-            if engine._stop_event.is_set():
+            if aborted or engine._stop_event.is_set():
                 break
             engine.lap_count += 1
             if rounds > 1:

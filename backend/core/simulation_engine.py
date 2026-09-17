@@ -137,6 +137,10 @@ class SimulationEngine:
         self._active_route_coords: list[Coordinate] = []
         self._active_speed_profile: "SpeedProfile | None" = None
         self._pending_speed_profile: "SpeedProfile | None" = None
+        # True when the last _move_along_route gave up on push failures
+        # instead of finishing, so finite handlers (flower) can retry the
+        # leg rather than silently skipping ahead.
+        self._route_push_failed: bool = False
         # User-facing waypoints used for waypoint_progress emission.
         # Set by route_loop / multi_stop / navigator before each call to
         # _move_along_route, so highlight events refer to the named
@@ -823,6 +827,7 @@ class SimulationEngine:
         if not (self._speed_was_applied and self._active_speed_profile is not None):
             self._active_speed_profile = dict(speed_profile)
         self._pending_speed_profile = None
+        self._route_push_failed = False
         self.total_segments = max(len(coords) - 1, 0)
 
         # Outer loop: each iteration plans a fresh interpolation of the
@@ -969,6 +974,7 @@ class SimulationEngine:
                         break
                 if not pushed:
                     logger.error("Giving up on this route after repeated push failures")
+                    self._route_push_failed = True
                     break
 
                 # Update tracking
