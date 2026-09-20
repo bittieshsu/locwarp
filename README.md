@@ -1,6 +1,6 @@
 # LocWarp
 
-**iOS 虛擬定位模擬器**, 在 Windows 上控制 iPhone 的 GPS 定位,支援直接跳點、導航、多點路徑巡迴、繞點花農模式、隨機漫步、搖桿操作等模擬模式,可經由 USB 或 WiFi 連線。
+**在 Windows 上控制 iPhone / iPad GPS 定位的虛擬定位工具。** 免越獄,透過 USB 或 WiFi 連線,支援瞬移、導航、多點路徑、花農繞圈、隨機漫步與搖桿操作,最多可同時控制三台裝置。
 
 <p align="right">
   <a href="README.md"><img alt="繁體中文" src="https://img.shields.io/badge/繁體中文-active-2d3748?style=flat-square"></a>
@@ -8,78 +8,73 @@
 </p>
 
 <p align="center">
-  <a href="https://lin.ee/UwdCrmf" target="_blank">
-    <img src="https://img.shields.io/badge/LINE-加我好友-06C755?style=for-the-badge&logo=line&logoColor=white" alt="LINE" height="40">
-  </a>
-  &nbsp;&nbsp;
-  <a href="#usdt-斗內-trc-20--tron-鏈" target="_blank">
-    <img src="https://img.shields.io/badge/USDT-TRC--20-26A17B?style=for-the-badge&logo=tether&logoColor=white" alt="USDT" height="40">
-  </a>
-</p>
-
-> 有問題或想聯絡作者, 歡迎[加 LINE](https://lin.ee/UwdCrmf)。  
-> 想支持開發者, 可以用下方 USDT 地址直接斗內。
-
-### USDT 斗內 (TRC-20 / TRON 鏈)
-
-**錢包地址**
-
-```
-TB1i7pEcifAeh8oDLLZFqiRVrpUaZmmDAn
-```
-
-**僅支援 TRC-20 (TRON 鏈)**
-
-<p>
-  <img src="docs/donate-usdt-tron-qr.png" alt="USDT TRC-20 QR" width="260">
-</p>
-
-
-> ### 專案性質聲明
->
-> LocWarp 為個人獨立維護之開源專案,非商業產品,亦無專職團隊。開發者將盡力於合理時間內新增功能、回應 Issue、修復 Bug 並隨 iOS / pymobiledevice3 版本演進持續更新,然:
->
-> - 本專案僅保證**於開發者本人測試環境**(目前為 iPhone 16 Pro Max / iOS 26.5 + Windows 11 專業版)下運作正常;
-> - **不保證於其他裝置、iOS 修補版本、網路環境、系統配置下皆能穩定使用**;
-> - 若遇到問題,歡迎至 [Issues](https://github.com/keezxc1223/locwarp/issues) 提交完整環境資訊與日誌,以協助定位與改善;
-> - 本專案不保證永續維護,亦不承擔因使用本工具所生之任何責任。
-
-> ### 系統需求
->
-> **LocWarp 自 v0.1.49 起僅支援 iOS / iPadOS 17 以上的裝置。**
->
-> iOS 17+ 為主要支援版本(開發者日常測試);**iOS 16.x 自 v0.2.5 起由 @bitifyChen (#9) 社群維護**,走 LegacyLocationService 路徑,最低門檻為 iOS 16.0。iOS 15 以下不受支援。
-
-> ### 相容性測試狀態
->
-> | 主版本 | 已驗證版本 | 狀態 |
-> | --- | --- | --- |
-> | **iOS 26.x** | 26.4.2 · 26.4.1 · 26.4.1 iPadOS · 26.4 · 26.3.1 · 26.2 · 26.2.1 iPadOS (M1 iPad) | ![Reported](https://img.shields.io/badge/回報可用-6c8cff?style=flat-square) |
-> | **iOS 18.x** | 18.7.8 · 18.7.7 · 18.7.1 · 18.6.2 · 18.5 iPadOS · 18.3.1 · 18.1.1 | ![Reported](https://img.shields.io/badge/回報可用-6c8cff?style=flat-square) |
-> | **iOS 17.x** | 17.6.1 | ![Reported](https://img.shields.io/badge/回報可用-6c8cff?style=flat-square) |
-> | **iOS 16.x**(社群維護) | 16.7.15 · 16.7.12([#9](https://github.com/keezxc1223/locwarp/pull/9),@bitifyChen) | ![Reported](https://img.shields.io/badge/回報可用-6c8cff?style=flat-square) ![Community](https://img.shields.io/badge/社群維護-ffa726?style=flat-square) |
-> | **iOS 15.x 及以下** | n/a | ![Unsupported](https://img.shields.io/badge/不支援-f44336?style=flat-square) |
->
-> **說明**:上表僅彙整開發者實測與少數社群回饋的結果,**並不保證於所有相同版本的裝置、網路環境或系統組合下皆能正常運作**。iOS 虛擬定位的穩定性高度依賴 iOS 修補版本、pymobiledevice3 對該版本的支援程度、Developer Disk Image 是否成功掛載,以及 Windows 端的驅動、VPN、防火牆、AV 配置。因此「回報可用」僅代表**至少一位使用者在其特定環境下成功運作**,不等同於通用相容性聲明。
->
-> 未列於上表的 iOS 16+ 版本並非確定不相容,僅表示尚未收到回報。使用前請自行評估風險,若遇到問題、發現 Bug 或確認某版本可用,歡迎至 [Issues](https://github.com/keezxc1223/locwarp/issues) 提出以協助累積相容性資料。
-
-<p align="center">
   <img src="frontend/build/icon.png" width="128" alt="LocWarp">
 </p>
 
 <p align="center">
-  <a href="#使用者端需求">
-    <img alt="使用者端說明" src="https://img.shields.io/badge/使用者端說明-2d3748?style=for-the-badge&logo=readthedocs&logoColor=white">
-  </a>
   <a href="https://github.com/keezxc1223/locwarp/releases">
     <img alt="下載安裝檔" src="https://img.shields.io/badge/下載安裝檔-4285f4?style=for-the-badge&logo=github&logoColor=white">
+  </a>
+  <a href="#安裝與前置設定">
+    <img alt="安裝說明" src="https://img.shields.io/badge/安裝說明-2d3748?style=for-the-badge&logo=readthedocs&logoColor=white">
+  </a>
+  <a href="https://lin.ee/UwdCrmf" target="_blank">
+    <img alt="LINE" src="https://img.shields.io/badge/LINE-聯絡作者-06C755?style=for-the-badge&logo=line&logoColor=white">
   </a>
 </p>
 
 <p align="center">
   <img src="docs/demo-v2.gif" width="720" alt="LocWarp demo">
 </p>
+
+## 目錄
+
+- [快速開始](#快速開始)
+- [系統需求與相容性](#系統需求與相容性)
+- [功能](#功能)
+- [安裝與前置設定](#安裝與前置設定)
+- [疑難排解](#疑難排解)
+- [開發者文件](#開發者文件)
+- [支持與聯絡](#支持與聯絡)
+- [專案性質聲明](#專案性質聲明)
+- [License](#license)
+- [Disclaimer(免責聲明)](#disclaimer免責聲明)
+
+---
+
+## 快速開始
+
+1. 到 [Releases](https://github.com/keezxc1223/locwarp/releases) 下載最新的 `LocWarp Setup x.y.z.exe` 並安裝。
+2. 電腦安裝 iTunes 或 Apple Devices(提供 Apple USB driver)。
+3. 用 USB 線接上 iPhone,在 iPhone 上點「信任這部電腦」。
+4. iPhone 開啟「設定 → 隱私權與安全性 → 開發者模式」。找不到這個選項時,LocWarp 連線後可以一鍵讓它出現。
+5. 開啟 LocWarp(會要求系統管理員權限),在地圖上按右鍵即可瞬移。
+
+每個步驟的細節見[安裝與前置設定](#安裝與前置設定)。防毒軟體若把後端程式誤判隔離,請先把安裝資料夾加入排除清單再重新安裝。
+
+---
+
+## 系統需求與相容性
+
+| 項目 | 需求 |
+| --- | --- |
+| 電腦 | Windows 10 / 11(64 位元) |
+| 裝置 | iPhone / iPad,**iOS / iPadOS 17 以上**為主要支援版本 |
+| iOS 16.x | 由社群維護(@bitifyChen,[#9](https://github.com/keezxc1223/locwarp/pull/9)),走 LegacyLocationService 路徑 |
+| iOS 15 以下 | 不支援 |
+| 連線 | USB 線,或同一個 WiFi 網段(WiFi Tunnel 僅 iOS 17+) |
+
+### 已回報可用的版本
+
+| 主版本 | 已驗證版本 |
+| --- | --- |
+| **iOS 27.x** | 27(開發者實測,iPhone 18 Pro Max) |
+| **iOS 26.x** | 26.5 · 26.4.2 · 26.4.1 · 26.4.1 iPadOS · 26.4 · 26.3.1 · 26.2 · 26.2.1 iPadOS (M1 iPad) |
+| **iOS 18.x** | 18.7.8 · 18.7.7 · 18.7.1 · 18.6.2 · 18.5 iPadOS · 18.3.1 · 18.1.1 |
+| **iOS 17.x** | 17.6.1 |
+| **iOS 16.x**(社群維護) | 16.7.15 · 16.7.12 |
+
+「回報可用」代表**至少一位使用者在其環境下成功運作**,不等同於通用相容性保證。虛擬定位的穩定性取決於 iOS 修補版本、pymobiledevice3 對該版本的支援、Developer Disk Image 是否已掛載,以及 Windows 端的驅動、VPN、防火牆與防毒設定。沒列在表上的 iOS 16+ 版本只是還沒有人回報,歡迎到 [Issues](https://github.com/keezxc1223/locwarp/issues) 補充。
 
 ---
 
@@ -89,157 +84,183 @@ TB1i7pEcifAeh8oDLLZFqiRVrpUaZmmDAn
 
 | 模式 | 說明 |
 | --- | --- |
-| **Teleport** | 瞬間跳到指定座標 |
-| **Navigate** | 從目前位置沿 OSRM 路線步行/跑步/開車到目的地 |
-| **多點路徑** | 依序經過多個路徑點,**每站隨機 5~20 秒停頓**(可自訂);圈數可設 **0(跑一趟)/ N(繞 N 圈)/ 留空(無限循環)**,原「路線巡迴」與「多點停留」自 v0.2.177 起合併為此模式 |
-| **花農專用** | 在每個路徑點周圍**繞圈圈**(v0.2.178+):繞圈距離、每圈段數(3~20)、每點圈數(0.5 步進,0.5 = 半圈)、總輪數、每點前後等待皆可自訂並保存,點與點之間可走過去或瞬移;設定面板即時顯示**整趟預估總時長**,斷線會自動重連續跑 |
-| **Random Walk** | 在指定半徑內隨機漫遊,每段停頓時間可調 |
-| **Joystick** | 以方向 + 力度即時操控,支援 **WASD / 方向鍵** 鍵盤操作 |
+| **瞬移** | 直接跳到指定座標 |
+| **導航** | 從目前位置沿實際道路走路、跑步或開車到目的地 |
+| **多點路徑** | 依序經過多個路徑點,每站可停留(預設隨機 5 到 20 秒)。圈數設 0 為跑一趟,設 N 為繞 N 圈,留空為無限循環 |
+| **花農專用** | 在每個路徑點周圍繞圈。繞圈距離、每圈段數(3 到 20)、每點圈數(0.5 為半圈)、總輪數、每點前後等待都可以自訂並保存,點與點之間可走過去或瞬移。面板會即時顯示整趟預估時間,斷線會自動重連續跑 |
+| **隨機漫步** | 在指定半徑內隨機漫遊,每段停頓時間可調 |
+| **搖桿** | 以方向和力度即時操控,支援 WASD 與方向鍵 |
 
-#### 點對點跳躍
-
-多點路徑中可勾「**點對點跳躍**」,改成逐點瞬移、不再走 OSRM 路徑。適合不想真的走過去、只要 iPhone 依序停留在每個點上的場景。設定會記在 localStorage。
-
-- **跳躍前延遲**(預設 2 秒):瞬移前的等待,兩段延遲都會被暫停凍結(v0.2.158+)
-- **跳躍後延遲**(預設 4 秒):瞬移後在該點的停留時間
-
-
-### 多裝置群組模式(三裝置上限)
-
-可同時連接 **最多三台 iPhone**,所有操作 (瞬移、導航、多點路徑、花農、隨機漫步、搖桿、暫停、繼續、停止、套用速度、全部還原) 會**同步發送**到所有連線的裝置(桌面 UI 跟手機操控都支援)。
-
-- 側邊欄頂端裝置 chip 顯示連線狀態與目前模式;右鍵選單可單獨還原 / 開發者模式 / 中斷該台
-- 底部狀態列多 pill 並陳每台座標、速度、模式;「全部還原」一鍵清除全部虛擬定位
-- **自動同步起點**:啟動任何群組動作前先把所有裝置瞬移到同座標,確保路徑一致
-- **隨機漫步共用亂數種子**:所有裝置目的地序列完全相同,跑幾小時也不會脫鉤
-- **冷卻 toggle 自動鎖定為關閉**:避免裝置同步動作互相阻擋
-- **自動連線**:USB 偵測到新裝置 1 秒內自動配對,直到 3 台上限,第四台插上完全不理
-- 地圖維持單一視覺 (所有裝置已永遠重疊,多 marker 反而是雜訊),裝置狀態靠 chip 與 StatusBar pill 呈現
-
-### 路徑來源選擇
-
-模式區塊「使用直線路徑」下方多一顆「**路徑來源**」按鈕,點開彈窗可在四家免費路徑生成服務之間切換(全部免 API key、免註冊、免綁卡):
-
-| 引擎 | Endpoint | 說明 |
-| --- | --- | --- |
-| **OSRM 公用 demo**(預設) | `router.project-osrm.org` | 全球涵蓋,無需金鑰,有時整個服務會掛 |
-| **OSRM FOSSGIS** | `routing.openstreetmap.de` | 同樣是 OSRM 引擎,改由 FOSSGIS 託管的鏡像 |
-| **Valhalla** | `valhalla1.openstreetmap.de` | 完全不同的路徑引擎,當 OSRM 兩個節點都掛時最有用 |
-| **BRouter** | `brouter.de` | 第四個獨立引擎(個人營運多年穩定),OSM 資料 + 自家路徑引擎,涵蓋全球,單車 / 健行 / 開車 profile 齊全 |
-
-選擇記在 localStorage,下次自動套用。任何引擎失敗(502 / timeout / NoRoute)時這一段自動退回密化直線,下一段繼續打引擎,不會卡死。勾「使用直線路徑」時整個選擇器會 disable,因為連引擎都不打。
+多點路徑可以勾選「**點對點跳躍**」,改成逐點瞬移而不走道路,適合只需要 GPS 依序停在每個點上的情況。跳躍前延遲(預設 2 秒)與跳躍後延遲(預設 4 秒)都可以調整,暫停時兩段延遲都會凍結。
 
 ### 速度控制
 
-- **預設三檔**:走路 5 / 跑步 10 / 開車 40 km/h
-- **自訂固定速度**:輸入任意 km/h 覆蓋模式預設
-- **隨機範圍**:輸入 min ~ max(例如 40 ~ 80 km/h),後端每段路重抽,模擬真實路況
-- **路線中即時套用新速度**:導航 / 多點路徑 / 花農 / 隨機漫步 / 搖桿模式進行中可修改速度後按「**套用新速度**」,後端從當前位置以新速度重算剩餘路段並接續執行,**不需停下重來**;停靠等待期間套用也有效,抵達下一個路徑點不會恢復舊速度(v0.2.189+)
-- 狀態列速度顯示**即時反映所選速度**;選過的速度自動記為預設,重開程式沿用(v0.2.175+)
-- 到點/到圈暫停時,地圖上方顯示橘色倒數橫幅
+- 三檔預設:走路 5、跑步 10、開車 40 km/h。
+- 可輸入任意固定速度,或輸入最小到最大的隨機範圍(例如 40 到 80 km/h),每段路重新抽一次,模擬真實路況。
+- 移動進行中可以修改速度後按「套用新速度」,會從目前位置以新速度接續,不用停下重來。
+- 選過的速度會記住,下次開啟沿用。到點暫停時地圖上方會顯示倒數。
+
+### 路徑來源
+
+導航與多點路徑使用的道路路線,可以在四個免費、免註冊的路徑引擎之間切換:
+
+| 引擎 | 說明 |
+| --- | --- |
+| **OSRM 公用 demo**(預設) | 全球涵蓋,偶爾整個服務會中斷 |
+| **OSRM FOSSGIS** | 同樣是 OSRM 引擎,由 FOSSGIS 代管的鏡像 |
+| **Valhalla** | 完全不同的引擎,兩個 OSRM 節點都中斷時最有用 |
+| **BRouter** | 獨立營運的第四個引擎,單車、健行、開車 profile 齊全 |
+
+任何引擎失敗時,該段路自動改走直線,下一段再重試,不會卡住。也可以直接勾選「使用直線路徑」完全不查詢引擎。多點路徑另有「最佳順序」功能,一鍵算出最短的走訪順序。
+
+### 連線方式
+
+- **USB**:插上自動連線,iPhone 鎖定螢幕不受影響。拔除約 4 秒內偵測到,重新插上自動恢復,不用重新整理。
+- **WiFi Tunnel**(iOS 17+,需先用 USB 配對過一次):
+  - 「自動偵測」會先用 mDNS 尋找裝置,找不到再掃描區域網路。
+  - 連過的 IP 會記住,也可以「釘選」裝置,之後每次啟動自動連上,斷線自動重試。
+  - 「螢幕暗掉維持連線」(實驗功能)會持續補送位置,降低 iPhone 鎖定螢幕後斷線的機率。
+  - 「重新配對」可在配對記錄損毀時,透過 USB 一鍵重建。
+  - 停止 Tunnel 時若 USB 還插著,會自動切回 USB。
+
+### 多裝置群組模式
+
+可同時連接**最多三台**裝置。瞬移、導航、各種移動模式、暫停、繼續、停止、套用速度、還原,都會同步送到所有裝置,桌面與手機網頁操控都適用。
+
+- 啟動任何動作前,會先把所有裝置瞬移到同一個座標,確保路徑一致。
+- 隨機漫步使用相同的亂數種子,所有裝置走的路線完全相同。
+- 後來才接上的裝置,會自動同步到目前位置並接續正在執行的任務。
+- 每台裝置可以個別還原、中斷或開啟開發者模式選項。
+
+### 地圖
+
+- **圖層切換**(右上角):OSM、Google 圖磚(測試)、ESRI 街道、ESRI 衛星、OpenFreeMap Liberty / Bright / Positron(向量圖)、VersaTiles Colorful、NLSC 台灣電子地圖、GSI 日本地理院地圖。全部免 API key。
+- 路徑點以 S / 1 / 2 / 3 標示,路徑線有流動箭頭可以看出方向。
+- 左上角按鈕可一鍵置中目前的模擬位置。選「只顯示路徑」時地圖會自動縮放到整條路線。
+- 地圖上的使用者圖示可以換成內建的 6 組角色,或上傳自己的 PNG(自動去除透明邊界)。
+- 座標格式可在 DD、DMS、DM 之間切換。
+
+### 座標收藏
+
+- 新增座標時自動帶入地名與國旗,編輯後座標改變會自動更新國旗。
+- 分類可自訂顏色,支援搜尋、排序(名稱 / 日期 / 最後使用)、拖曳排序、多選刪除。
+- 匯入與匯出:JSON(全部資料,匯入為合併不覆蓋)、GPX(單筆、整個分類,或多個分類一次匯出成 ZIP)。
+- 可把所有收藏顯示在地圖上,數萬筆也不會卡頓,密集的點會自動聚合。
+- 「點擊也要飛 GPS」可以決定點座標時是真的瞬移過去,還是只把地圖畫面移過去看看。
+
+### 儲存路線
+
+- 路線可以分類、拖曳排序,並從清單直接載入開始跑。
+- 支援 GPX 與 JSON 的匯入匯出。
+- 可以把路徑點依目前順序複製成一行一筆的 `lat, lng` 文字。
+
+### 地址搜尋
+
+- **免費版**:預設來源,使用 OpenStreetMap 開放資料,不用 API key。設定裡另有 Photon 選項,模糊搜尋與錯字容錯較強。
+- **Google Geocoding**:輸入自己的 API key(只存在本機),中文地名與店家結果最精準,每月有免費額度。
+- 座標輸入框可以直接貼上座標文字,會自動辨識出有效的經緯度。
+- 手機網頁操控會沿用電腦端的設定。
 
 ### 手機網頁操控
 
-不在電腦旁也能用手機操控 LocWarp。底部狀態列「**手機操控**」按鈕跳出 modal 顯示 LAN 內網址跟 6 位數 PIN,把網址打到手機瀏覽器、輸入 PIN,手機就拿到一張行動裝置版的地圖加七顆功能鈕:
+人不在電腦旁時,可以用手機瀏覽器操控。按狀態列的「手機操控」會顯示區域網路網址與 6 位數 PIN,手機輸入後就能使用行動版地圖:瞬移、導航到指定點(走路 / 腳踏車 / 開車或自訂速度)、搜尋地址、輸入座標、停止與還原,並即時顯示桌面上同一條路徑。
 
-> **使用前提**:手機必須先連上跟電腦**同一個 WiFi 網路**(只用行動數據抓不到電腦的內網 IP),電腦防火牆若擋 8777 port 也要先放行。電腦端對 iPhone 的連線方式 (USB 或 WiFi Tunnel) 不限,有任何一種能控到 iPhone 即可。
+> 手機必須跟電腦連在**同一個 WiFi**,電腦防火牆需放行 8777 port。按「重新產生」可立刻更換 PIN,讓之前配對過的手機失效。
 
-| 功能 | 行為 |
-| --- | --- |
-| **瞬移** | 點地圖任一點瞬移過去 |
-| **導航到這裡** | 從目前虛擬位置走過去,可選走路 / 腳踏車 / 開車或自訂 km/h |
-| **搜尋地址** | 輸入地名查 Nominatim,點結果直接瞬移 |
-| **座標飛** | 一行輸入框自動掃出有效座標 (跟桌面版同一個 parser) |
-| **停止 / 還原** | 跟桌面版同邏輯 |
+### 狀態列資訊
 
-- 手機端地圖即時顯示桌面同一條藍色路徑線 (HTTP polling)
-- Token 隨機 32-hex,只在桌面 modal 取得;PIN 6 位數,輸錯 401 拒絕
-- 「重新產生」可立刻換一組 PIN + token,讓之前配對過的手機失效
+- 目前模擬位置的**國旗、地名、當地天氣與溫度**。
+- 跨時區時顯示時差,點開可看完整時區資訊。
+- **一鍵還原**:清除虛擬定位。注意「停止」只會結束移動,虛擬定位仍然保留,要恢復真實 GPS 請按還原。
+- 版本號:有新版本時旁邊出現 `NEW` 標示,點擊前往下載頁。
+- 「Log 資料夾」按鈕:一鍵開啟 `~/.locwarp/logs/`,方便把 backend.log 附到 Issue。
 
-### 連線方式(iOS 16+)
+### 其他
 
-- **USB 有線**:插上即自動連線,鎖屏不影響
-- **WiFi Tunnel(USB 拔除模式)**:
-  - 按「自動偵測」→ 先 mDNS 廣播 → 失敗自動退回 /24 TCP 掃描,逐一嘗試每個候選 port
-  - 成功連線的 IP / Port 記到 localStorage,下次自動預填;「最近」IP 清單可逐筆刪除(v0.2.190+)
-  - 停止 Tunnel 後若 USB 仍插著,**自動切回 USB 模式**
-  - 「**重新配對**」按鈕:RemotePairing 記錄損毀時可一鍵透過 USB 重建 `~/.pymobiledevice3/`(iPhone 會跳信任提示)
-  - **釘選裝置**(v0.2.160+):連上後點「釘選」,之後每次啟動自動連上該裝置,斷線也會自動重試;有釘選時不會自動掃網路上的其他手機
-  - **螢幕暗掉維持連線**(v0.2.160+,實驗功能):每秒對 RSD tunnel 補送位置保持連線(v0.2.173 起閒置時也維持),避免 iPhone 鎖屏後網路介面休眠;點對點跳躍 / 花農等待期間也維持心跳(v0.2.188+)
-- **USB 即時熱插拔偵測**:
-  - 拔除 USB 約 4 秒內偵測,清除 engine + 廣播紅色橫幅 + 右鍵選單顯示「USB 已斷開」
-  - 重新插上自動偵測 + 重新連線 + 重建 engine,**不必重新整理**
-- **連線時版本檢查**:iOS <16 直接拒絕並顯示具體版本與升級提示
-
-### Developer Disk Image
-
-- iOS 17+ 需要 **Personalized DDI** 掛在 iPhone 上才能走 DVT(instruments → dtservicehub)
-- v0.2.58 起 LocWarp **不自動下載、不自動掛載 DDI**(iOS 26.4.1 的 RSD tunnel 撐不住 20MB 上傳導致不穩);改為只檢查 iPhone 上是否已有 DDI,沒有就跳提示請先在 iPhone 上掛過一次 DDI 後再回來使用(掛載工具參考下方[疑難排解](#疑難排解)章節)
-
-### 地圖與輔助
-
-- **地圖定位按鈕**(左上角):一鍵置中目前虛擬位置
-- **圖層切換**(右上角):OSM / Google 圖磚(測試) / ESRI 街道 / ESRI 衛星 / OpenFreeMap Liberty、Bright、Positron(向量圖) / VersaTiles Colorful / NLSC 台灣電子地圖 / GSI 日本地理院地圖
-- **當地天氣**:狀態列顯示虛擬位置的當前天氣 + 溫度(Open-Meteo,動態 SVG 圖示:太陽呼吸、雨滴下落、雪花旋轉、雷電閃爍)
-- **國旗與時區**:瞬移後自動顯示當地國旗,跨時區時 toast 提醒時差
-- **地圖釘 / 使用者頭像**(狀態列):
-  - 預設「小藍人」+ 6 組內建角色 PNG(兔兔 / 小狗 / 小貓 / 狐狸 / 男孩 / 女孩)+ 自訂 PNG 上傳
-  - 上傳 PNG 自動透明邊界偵測與去除,長邊縮成 88px,地圖顯示 44px,裸 PNG 透過不加底色
-  - 上傳的自訂圖與目前使用的頭像**分兩個 localStorage 格子存**,切換預設圖不會把使用者上傳的圖洗掉
-  - 點選任一張變 pending(藍框高亮),按**儲存**才套用;取消 / ESC / 按外面都不生效
-  - 切換後當場換地圖釘,不用瞬移才生效
-- **一鍵還原**:狀態列,清除 iPhone 虛擬定位並顯示「正在清除 / 已清除請等待生效」提示
-- **停止 ≠ 還原**:停止只結束移動,虛擬定位保留;清除請按「一鍵還原」
-- **座標收藏 / 分類**:
-  - 自訂座標(一格輸入 `lat, lng`)、JSON 全量匯出 / 匯入(合併,不覆蓋)
-  - 新增時**自動抓取地名**(短名稱)與**國旗**(reverse geocode)
-  - **多選刪除**、**分類顏色自訂**(10 色預設 + HEX 任意色)、搜尋、排序(名稱 / 日期 / 最後使用)
-  - **拖曳排序**(v0.2.146+):分類與項目均可手動拖曳調整顯示順序,記在 localStorage
-  - **GPX 匯入 / 匯出**(v0.2.184+):單筆座標右鍵匯出 GPX 航點;GPX 檔可匯入,航點各成一筆座標;分類右鍵可整分類匯出,勾選多個分類一起匯出 ZIP(一分類一 GPX,v0.2.186+)
-  - **數萬筆收藏不卡頓**(v0.2.183+):地圖顯示改用分群索引與視野裁切,僅渲染目前畫面範圍內的點,小群維持清單彈窗、大群點擊放大展開
-  - 勾選「在地圖上顯示所有收藏」:地圖上會顯示所有收藏的精緻 pin(霓虹玻璃膠囊 + 國旗 + 聚合 Polaroid 卡片)
-  - 「點擊也要飛 GPS」勾選控制:打勾時點座標會把 iPhone 瞬移過去(預設);取消打勾則只把畫面飛過去看看,iPhone 定位不變
-  - 編輯座標時座標改變會自動刷新國旗
-- **儲存路線**:GPX 匯入 / 匯出、JSON 全量匯出 / 匯入
-  - **直接開始導航**(v0.2.177+):收藏的路線可從清單直接載入並開始跑,不必先載入再切模式
-  - **路線分類**(v0.2.133+):同名儲存可選擇覆蓋既有路線
-  - **拖曳排序**(v0.2.146+):分類與路線項目可手動排序
-  - **多點 / 路線複製座標**(v0.2.151+):依目前順序輸出 `lat, lng` 一行一筆,可貼回貼上對話框或外部工具
-  - **最佳順序**(v0.2.134+):多點路徑可一鍵跑 TSP 找最短順序,改走 BRouter 引擎避免直線估算誤差;v0.2.143+ 結果可直接帶入移動模式,toast 用使用者實際速度估時
-- **路徑點 + 路徑線**:地鐵站點風格的 S/1/2/3 標 + 動態箭頭流動線,看得出方向感
-- **地址搜尋**:三家免費供應商任選(設定面板切換,選擇記在 localStorage)
-  - **Nominatim**(預設):OSM 官方,涵蓋全球
-  - **Photon (komoot)**(v0.2.149+):模糊搜尋 / 容錯字比 Nominatim 強
-  - **Google Geocoding API**:輸入個人 API Key,完全保存在本機,中文地名與店家結果最精準
-  - 手機網頁版會跟著電腦端的選擇走(v0.2.150+),不會卡在 Nominatim 403
-- **Cooldown 防偵測**:依跳點距離動態延遲,避免異常偵測
-- **座標格式切換**:DD / DMS / DM
-- **右鍵選單自動防出界**:選單會用 `useLayoutEffect` 測量實際尺寸,超出視窗右 / 底邊緣時自動往內推,不會被切;「移動到」子選單過長時可捲動,不再超出視窗(v0.2.191+)
-
-### 使用者體驗
-
-- 啟動時 backend race condition 自動重試(最多 ~20 秒緩衝),無需手動重開
-- WebSocket 即時推播位置、進度、ETA、剩餘距離、裝置連線狀態
-- 模擬進行中切換模式 tab 不再清空地圖上的終點 / 路徑 / 路徑點,閒置時切換才會重置
-- 斷線自動重連 + banner 自動清除
-- **iOS 風格頂端分頁**(v0.2.169+):側邊欄改為導航 / 連線 / 收藏 / 設定四個頂端分頁,連線狀態與裝置卡片獨立在「連線」頁,設定獨立在「設定」頁;開發者模式選項常駐「設定」頁(v0.2.174+)
-- **路徑點清單可摺疊**(v0.2.177+):摺疊時只顯示目前與下一個路徑點,長路線不佔畫面
-- **左鍵設置路徑點**選項記憶上次狀態,重開程式自動沿用(v0.2.176+)
-- **更新檢查**:啟動時從 GitHub Releases 比對版本,有新版時在底部狀態列版本號旁顯示彩色 `NEW` 膠囊提示(不再彈出對話框打斷操作),點擊版本號即跳轉到下載頁
-- **時差 chip**(狀態列,v0.2.128+):跨時區後顯示當地時間差,點開彈窗看完整時區 / 城市 / GMT 偏移;右下時鐘即時更新
-- **路線完成提示音**(v0.2.131+):路線跑完播一段音效,新增「設定」按鈕可關閉
-- **硬體加速 toggle**(v0.2.132+,設定面板):部分顯示卡驅動下關閉可解決畫面殘影 / 黑屏 ([Issue #24](https://github.com/keezxc1223/locwarp/issues/24))
-- **IP 欄位歷史**(v0.2.152+):Tunnel IP 欄位旁新增「最近」清單,可直接點選免重打
-- **只顯示路徑時自動縮放**(v0.2.161+):選「只顯示路徑」模式時地圖自動移動並縮放至整條路線範圍
-- **Log 資料夾**按鈕(狀態列):一鍵開啟 `~/.locwarp/logs/` 資料夾,方便將 backend.log 附到 Issue
-- 右下角顯示**目前 App 版本**(有新版本時旁邊出現流動漸層 `NEW` 膠囊)
-- 介面語言:繁體中文 / English 即時切換
-- **官方 LINE 按鈕**(側邊欄底部):有問題或建議直接聯絡作者
-- 所有狀態(座標收藏、設定、tunnel 資訊)寫在 `~/.locwarp/`
+- **Cooldown**:依瞬移距離自動計算冷卻時間,降低被偵測為異常移動的風險。
+- 介面語言可在繁體中文與 English 之間即時切換。
+- 路線完成提示音、硬體加速開關(部分顯示卡驅動下關閉可解決殘影或黑畫面,見 [Issue #24](https://github.com/keezxc1223/locwarp/issues/24))。
+- 所有資料(座標收藏、路線、設定)都存在 `~/.locwarp/`,重新安裝不會遺失。
 
 ---
 
-## 架構
+## 安裝與前置設定
+
+**[下載安裝檔](https://github.com/keezxc1223/locwarp/releases)**。安裝檔已包含所有需要的元件,不用另外安裝 Python 或 Node。安裝後從桌面或開始選單開啟 **LocWarp**,啟動時會要求系統管理員權限(WiFi Tunnel 建立虛擬網路介面需要)。
+
+### 1. 安裝 Apple USB driver
+
+Windows 需要 Apple 的 USB driver 才能跟 iPhone 溝通。下列**擇一**安裝即可:
+
+- [iTunes for Windows(桌面版,64-bit)](https://secure-appldnld.apple.com/itunes12/047-76416-20260302-fefe4356-211d-4da1-8bc4-058eb36ea803/iTunes64Setup.exe)
+- [Microsoft Store 的 iTunes](https://apps.microsoft.com/detail/9pb2mz1zmb1s)
+- [Microsoft Store 的 Apple Devices](https://apps.microsoft.com/detail/9np83lwlpz9k?hl=zh-TW&gl=TW)
+
+多數人裝桌面版 iTunes 就能用。如果 iTunes 抓不到 iPhone,社群回報改裝 Apple Devices 可以成功。
+
+### 2. USB 連接並信任此電腦
+
+第一次使用前用 USB 線接上 iPhone,iPhone 會詢問「要信任這部電腦嗎?」,點**信任**並輸入密碼。
+
+### 3. 開啟開發者模式
+
+iPhone 上:**設定 → 隱私權與安全性 → 開發者模式 → 開啟**,裝置會要求重新啟動,重啟後再確認一次。
+
+iOS 16 以上預設不顯示這個選項。LocWarp 連上裝置後,若偵測到開發者模式未啟用,會出現「**顯示開發者模式選項**」按鈕,按下後:
+
+1. 在 iPhone 上完全關掉「設定」App。
+2. 重新打開「設定 → 隱私權與安全性」,往下拉就會看到「開發者模式」。
+3. 開啟它,依指示重新啟動。
+
+按鈕不能用的時候(例如只有 WiFi 連線),可以改用[側載 IPA 的備援方式](#附錄用側載方式讓開發者模式出現)。
+
+### 4. 掛載 Developer Disk Image(iOS 17+)
+
+iOS 17 以上需要 iPhone 上掛有 Personalized DDI 才能模擬定位。LocWarp 只會檢查,不會自動下載或掛載。如果提示「iPhone 上未偵測到 DDI」,請用下列任一工具幫 iPhone 掛一次:Xcode、愛思助手、3uTools、pymobiledevice3 CLI。
+
+### 5. WiFi Tunnel(選用)
+
+想拔掉 USB 改用無線時:
+
+- iPhone 與電腦必須在**同一個 WiFi 網段**。
+- 必須先完成步驟 2 的 USB 配對。
+- 在 LocWarp 的「連線」頁啟動 WiFi Tunnel,成功後即可拔除 USB。
+
+| 連線方式 | iPhone 鎖定螢幕 | 建議 |
+| --- | --- | --- |
+| **USB** | 不受影響 | 無 |
+| **WiFi Tunnel** | 會讓網路介面休眠,連線中斷 | 關閉自動鎖定,或開啟「螢幕暗掉維持連線」 |
+
+使用 WiFi Tunnel 時建議把「設定 → 顯示與亮度 → 自動鎖定」設為**永不**,並接上充電線。
+
+---
+
+## 疑難排解
+
+| 症狀 | 可能原因與解法 |
+| --- | --- |
+| 開啟後顯示後端程式不存在 | 防毒軟體把未簽章的後端 exe 隔離了。把安裝資料夾加入排除清單後重新安裝 |
+| Tunnel 啟動後連不上 | 確認以系統管理員身分啟動;暫時關閉 VPN 或第三方防火牆再試 |
+| WiFi 自動偵測找不到裝置 | 確認在同一個 WiFi 網段、路由器沒有開啟裝置隔離(AP isolation);可改為手動輸入 IP |
+| `No such service: com.apple.instruments.dtservicehub`,或提示「未偵測到 DDI」 | 依[步驟 4](#4-掛載-developer-disk-imageios-17)掛載 DDI。仍失敗時,先把開發者模式關閉、重開機、再次開啟,然後重新掛載 |
+| 設定裡找不到開發者模式 | 見[步驟 3](#3-開啟開發者模式) |
+| 畫面殘影或黑畫面 | 在「設定」頁關閉硬體加速 |
+| 國旗或地名沒有出現 | 這兩項來自免費的公共服務,偶爾會暫時無回應,稍後再瞬移一次即可 |
+
+回報問題時請附上 iOS 版本、連線方式,以及 `~/.locwarp/logs/backend.log`。
+
+### 附錄:用側載方式讓開發者模式出現
+
+1. 安裝 [Sideloadly](https://sideloadly.io/)。
+2. 從 [Decrypt IPA Store](https://decrypt.day/) 或 [ARM Converter Decrypted App Store](https://armconverter.com/decryptedappstore/us) 取得任意一個 IPA,建議挑體積小的。
+3. 把 IPA 拖進 Sideloadly,USB 接上 iPhone,輸入個人 Apple ID 後按 **Start**。
+4. 完成後,iPhone 的「設定 → 隱私權與安全性」最下方會出現「開發者模式」,開啟並重新啟動。
+
+---
+
+## 開發者文件
+
+### 架構
 
 ```
 ┌─────────────────┐      IPC / HTTP + WS       ┌──────────────────┐
@@ -253,305 +274,173 @@ TB1i7pEcifAeh8oDLLZFqiRVrpUaZmmDAn
                                               └──────────────────┘
 ```
 
-### Frontend
+### 技術組成
 
-| 技術 | 版本 | 用途 |
+| 層 | 技術 | 用途 |
 | --- | --- | --- |
-| [Electron](https://www.electronjs.org/) | 43 | Desktop shell,負責視窗管理、spawn backend、注入 tile referer |
-| [React](https://react.dev/) | 19 | UI framework |
-| [TypeScript](https://www.typescriptlang.org/) | 7 | Type-safe JS |
-| [Vite](https://vitejs.dev/) | 8 | Dev server + 生產環境打包(`base: './'` 供 `file://` 載入) |
-| [Leaflet](https://leafletjs.com/) | 1.9 | 互動地圖(底圖切換 + 自訂 divIcon 書籤/路徑點標記 + 動畫 polyline) |
-| [MapLibre GL](https://maplibre.org/) | 5 | OpenFreeMap Liberty 向量圖層渲染(經 leaflet 橋接層掛入) |
-| Inline SVG | n/a | 天氣圖示、書籤 pin、路徑點標、控制按鈕,完全無第三方 icon 套件 |
-| PNG 靜態資產 | n/a | 6 個地圖釘預設頭像(`src/assets/avatars/`),Vite 自動 hash 打包 |
-| CSS | n/a | 手寫,單一 `styles.css`,包含所有 keyframe 動畫 |
+| Frontend | [Electron](https://www.electronjs.org/) 44 | 桌面外殼,負責視窗、啟動 backend、改寫圖磚請求的 User-Agent |
+| Frontend | [React](https://react.dev/) 19 + [TypeScript](https://www.typescriptlang.org/) 7 + [Vite](https://vitejs.dev/) 8 | UI 與打包(`base: './'` 供 `file://` 載入) |
+| Frontend | [Leaflet](https://leafletjs.com/) 1.9 | 互動地圖、自訂標記、動畫路徑線 |
+| Frontend | [MapLibre GL](https://maplibre.org/) 6 | 向量圖層渲染,經 maplibre-gl-leaflet 掛進 Leaflet |
+| Backend | Python 3.13 + [FastAPI](https://fastapi.tiangolo.com/) + [uvicorn](https://www.uvicorn.org/) | REST API 與 WebSocket(`:8777`) |
+| Backend | [pymobiledevice3](https://github.com/doronz88/pymobiledevice3) 11.2+ | iOS 裝置協議(DVT / RemoteServices / lockdown / LegacyLocationService)與 WiFi tunnel |
+| Backend | [httpx](https://www.python-httpx.org/)、[pydantic](https://docs.pydantic.dev/)、[gpxpy](https://github.com/tkrajina/gpxpy) | 外部服務呼叫、資料驗證、GPX 解析 |
+| 打包 | [PyInstaller](https://pyinstaller.org/)、[electron-builder](https://www.electron.build/)(NSIS) | backend exe 與 Windows 安裝檔 |
 
-### Backend
+介面圖示全部是 inline SVG,樣式是手寫的單一 `styles.css`,沒有使用第三方 icon 或 UI 套件。
 
-| 技術 | 版本 | 用途 |
+### 外部服務
+
+全部免費。除了 Google Geocoding 需要使用者自備 key,其餘都不需要註冊。
+
+| 服務 | 呼叫端 | 用途 |
 | --- | --- | --- |
-| Python | 3.13 | 主 runtime(v0.2.4 起從 3.12 升級) |
-| [FastAPI](https://fastapi.tiangolo.com/) | 0.139+ | REST API + WebSocket |
-| [uvicorn](https://www.uvicorn.org/) | 0.51+ | ASGI server(`:8777`) |
-| [websockets](https://websockets.readthedocs.io/) | 16+ | 即時位置/狀態推播給前端 |
-| [pymobiledevice3](https://github.com/doronz88/pymobiledevice3) | 10.1+ | iOS 裝置協議(DVT / RemoteServices / lockdown / LegacyLocationService) |
-| [pydantic](https://docs.pydantic.dev/) | 2.13+ | 資料驗證(schemas) |
-| [httpx](https://www.python-httpx.org/) | 0.27+ | OSRM / OSRM FOSSGIS / Valhalla / BRouter / Nominatim / TimezoneDB HTTP 呼叫 |
-| [gpxpy](https://github.com/tkrajina/gpxpy) | 1.6+ | GPX 路線解析 |
+| [OSRM demo](https://project-osrm.org/)、[OSRM FOSSGIS](https://routing.openstreetmap.de/)、[Valhalla](https://valhalla1.openstreetmap.de/)、[BRouter](https://brouter.de/) | backend | 路線規劃與多點順序最佳化 |
+| [Photon (komoot)](https://photon.komoot.io/) | backend | 地址搜尋與反向地理編碼(國旗、地名) |
+| [Google Geocoding API](https://developers.google.com/maps/documentation/geocoding) | backend | 地址搜尋(選用,使用者自備 key) |
+| [Open-Meteo](https://open-meteo.com/) | frontend | 模擬位置的天氣 |
+| [TimezoneDB](https://timezonedb.com/) | backend | 座標轉時區(內建 key) |
+| [flagcdn.com](https://flagcdn.com/) | frontend | 國旗圖片 |
+| OpenStreetMap、Google、[ESRI](https://www.esri.com/)、[OpenFreeMap](https://openfreemap.org/)、[VersaTiles](https://versatiles.org/)、[NLSC](https://maps.nlsc.gov.tw/)、[GSI](https://www.gsi.go.jp/) | frontend | 地圖圖磚 |
+| [GitHub Releases](https://github.com/keezxc1223/locwarp/releases) | frontend | 啟動時檢查新版本(無遙測) |
 
-### WiFi Tunnel(整合於 backend,iOS 17+ only)
+反向地理編碼不使用 Nominatim 公共伺服器,因為它的使用政策以應用程式為單位計算流量上限,不適合散佈型的桌面程式。地址搜尋的預設選項若被 Nominatim 拒絕,會自動改用 Photon。
 
-| 技術 | 用途 |
-| --- | --- |
-| pymobiledevice3 `start_tcp_tunnel()` | 建立 RSD tunnel(in-process asyncio task) |
-| pytun-pmd3 | Windows TUN 介面(wintun.dll,已捆入 backend exe) |
-
-### 外部服務(全部免費)
-
-| 服務 | 呼叫端 | 用途 | 需要 API Key |
-| --- | --- | --- | --- |
-| [OSRM 公用 demo](https://project-osrm.org/) | backend | 路線規劃 + `/table` 多點優化(walking / driving profile),預設來源 | 否 |
-| [OSRM FOSSGIS 鏡像](https://routing.openstreetmap.de/) | backend | 同 OSRM 引擎,可在「路徑來源」切換為備援 | 否 |
-| [Valhalla(FOSSGIS)](https://valhalla1.openstreetmap.de/) | backend | 不同的路徑引擎,「路徑來源」第三個選項,OSRM 全掛時可用 | 否 |
-| [BRouter](https://brouter.de/) | backend | 第四個獨立引擎,OSM 資料 + 自家路徑引擎,涵蓋全球,單車 / 健行 / 開車 profile 齊全 | 否 |
-| [Nominatim](https://nominatim.openstreetmap.org/) | backend | 地址搜尋預設來源(被拒絕時自動改用 Photon) | 否 |
-| [Photon (komoot)](https://photon.komoot.io/) | backend | 反向地理編碼(國旗、地名)與地址搜尋,模糊搜尋 / 容錯字比 Nominatim 強 | 否 |
-| [Google Geocoding API](https://developers.google.com/maps/documentation/geocoding) | backend | 地址搜尋備援來源(可選,免費 10K req/月);使用者於設定輸入自己的 API Key | 是(使用者自備) |
-| [Open-Meteo](https://open-meteo.com/) | **frontend(直連)** | 虛擬位置當地天氣(氣溫 + WMO weather_code);每個用戶自己 IP 各自 10000 req/day | 否 |
-| [TimezoneDB](https://timezonedb.com/) | backend | 座標 → 時區 + GMT 偏移,跨時區 toast 提醒 | 是(內建 Key) |
-| [flagcdn.com](https://flagcdn.com/) | frontend | 國旗 PNG(`w20/{cc}.png`、`w40/{cc}.png`) | 否 |
-| [ESRI World Imagery](https://www.esri.com/) | frontend tile | 衛星圖層(圖層切換) | 否 |
-| [OpenFreeMap Liberty](https://openfreemap.org/) | frontend tile | 向量圖層(類 Google Maps 風格,經 MapLibre GL 渲染) | 否 |
-| [NLSC 國土測繪中心](https://maps.nlsc.gov.tw/) | frontend tile | 台灣電子地圖(政府公開資料) | 否 |
-| [GSI 国土地理院](https://www.gsi.go.jp/) | frontend tile | 日本地理院地圖 | 否 |
-| OpenStreetMap raster | frontend tile | 標準 OSM 圖層(主要) | 否 |
-| [GitHub Releases](https://github.com/keezxc1223/locwarp/releases) | frontend | 啟動時檢查新版本(純 HTTP,無遙測) | 否 |
-
-### 打包工具
-
-| 工具 | 用途 |
-| --- | --- |
-| [PyInstaller](https://pyinstaller.org/) | Python → 單檔 exe(backend,含內建 tunnel) |
-| [electron-builder](https://www.electron.build/) | Electron 打包成 NSIS 安裝檔 |
-| NSIS | Windows 安裝器 |
-
-### 核心模組(backend/core/)
+### 核心模組(`backend/core/`)
 
 | 模組 | 職責 |
 | --- | --- |
-| `simulation_engine.py` | 中央控制器,管理狀態轉換、任務生命週期、`_move_along_route()` 核心移動迴圈、`EtaTracker` |
-| `device_manager.py` | 裝置探索、USB / WiFi Tunnel 連線管理 |
-| `navigator.py` | 單一目的地 OSRM 導航 |
-| `route_loop.py` | 多點路徑循環(圈數 0 / N / 無限) |
-| `multi_stop.py` | 多點依序經過,可停留 |
-| `flower.py` | 花農專用:繞每個路徑點圈圈 |
-| `random_walk.py` | 在半徑內隨機漫遊 |
-| `joystick.py` | 即時方向/力度控制 |
-| `teleport.py` / `restore.py` | 瞬移 / 恢復 |
+| `simulation_engine.py` | 中央控制器:狀態轉換、任務生命週期、`_move_along_route()` 移動迴圈、ETA 計算 |
+| `device_manager.py` | 裝置探索、USB 與 WiFi Tunnel 連線管理 |
+| `navigator.py` | 單一目的地導航 |
+| `route_loop.py` / `multi_stop.py` | 多點路徑的循環與停留 |
+| `flower.py` | 花農專用的繞圈邏輯 |
+| `random_walk.py` / `joystick.py` | 隨機漫步、搖桿 |
+| `teleport.py` / `restore.py` | 瞬移、還原 |
 
-### 關鍵設計
+### 設計重點
 
-- **WebSocket 位置推播**:backend 每 tick(`update_interval` 由速度 profile 決定)發 `position_update` 事件,前端即時更新地圖游標 + ETA bar
-- **速度解析**:`config.resolve_speed_profile(mode, speed_kmh, speed_min_kmh, speed_max_kmh)` 統一處理「模式預設 / 固定自訂 / 隨機範圍」三種輸入,優先序 `range > 固定 > 預設`
-- **In-process WiFi tunnel**:backend 自 v0.2.3 起直接在主 event loop 內執行 `start_tcp_tunnel()`,不再 spawn 獨立 helper exe
-- **Runtime 狀態目錄**:一律寫入 `~/.locwarp/`(bookmarks / settings / tunnel info),避免 PyInstaller 的 `_MEIPASS` 臨時目錄問題
-- **Tile User-Agent**:OSM 的 tile 服務會擋下預設的 Chromium UA,程式會對 OSM 的圖磚請求改寫為可識別的 User-Agent
-- **多裝置群組模式**(三裝置上限):同步瞬移 / 同步移動,primary 不被後插裝置搶走,後插的裝置自動同步到 primary 的位置並接續 primary 正在執行的任務(fanout)
-- **Idle-gated 地理查詢**:reverse geocode + timezone + 天氣僅在 idle / teleport / disconnect 狀態且位置變動 ≥ 100m 才觸發,避免跑動態模式時 HTTP 對 DVT 頻道產生 contention
-- **並行查詢地理資訊**(v0.2.147+):國旗 / 地標 / 時差 / 天氣同時打,單一服務慢時其他資訊不再跟著卡住
-- **前端天氣直連**:`lookupWeather()` 直接從 renderer 打 Open-Meteo,每個用戶自己 IP 各自計算配額,不透過 backend proxy 避免全體用戶共享一個來源 IP 爆量
-- **座標國旗自動補全**:新增 / 編輯座標時 reverse geocode 帶出 country_code 並渲染為國旗,座標變動時自動刷新
+- **位置推播**:backend 每個 tick 透過 WebSocket 送出 `position_update`,前端即時更新地圖與 ETA。
+- **速度解析**:`config.resolve_speed_profile()` 統一處理模式預設、固定速度、隨機範圍,優先序為範圍 > 固定 > 預設。
+- **In-process WiFi tunnel**:backend 直接在主 event loop 內執行 `start_tcp_tunnel()`,沒有獨立的 helper 程式。
+- **狀態目錄**:所有執行期資料寫入 `~/.locwarp/`,避開 PyInstaller 的臨時目錄。
+- **節制的地理查詢**:國旗、地名、時區、天氣只在靜止或瞬移後、且位置變動超過 100 公尺時查詢,移動中不查,避免干擾與裝置的通訊。四項查詢並行,其中一項慢不會拖住其他項。
+- **反向地理編碼快取**:結果以約 100 公尺的格子為單位存在磁碟(`reverse_geocode_cache.json`,保留 30 天),回到查過的地方不再連網,同時發出的相同查詢會合併成一次。新增座標與「這裡是哪裡」會略過快取以取得精確名稱。
+- **天氣由前端直連**:每個使用者用自己的 IP 計算 Open-Meteo 配額,不經 backend 轉送。
+- **圖層預先連線**:滑鼠移到圖層選單時,預先對所有圖層的主機建立連線並抓取向量圖層的 style,縮短第一次切換的等待。
+- **多裝置群組**:primary 裝置不會被後插的裝置取代,後插的裝置會同步到 primary 的位置並接續任務。
 
----
+### 開發環境
 
-## 開發環境
-
-### 先決條件
-
-- Windows 10 / 11
-- Python **3.13**(backend + WiFi tunnel 共用)
-- Node.js 18+
-- iPhone 已透過 iTunes / Apple Devices 配對過這台電腦
-- iOS 16+ 需開啟「開發人員模式」
-
-### 首次設置
+需求:Windows 10 / 11、Python **3.13**、Node.js 18+,以及一台已配對並開啟開發者模式的 iPhone。
 
 ```bash
-# 1. 後端依賴(含 WiFi tunnel)
+# 後端依賴(含 WiFi tunnel)
 py -3.13 -m pip install -r backend/requirements.txt
 
-# 2. 前端依賴
+# 前端依賴
 cd frontend
 npm install
 ```
 
-### 啟動(開發模式)
-
-雙擊 `LocWarp.bat`, 會自動提權並呼叫 `start.py`,同時啟動:
-- backend(`:8777`)
-- Vite dev server(`:5173`)
-- 預設瀏覽器自動開啟 `http://localhost:5173`(走瀏覽器,不啟 Electron)
-
-或手動:
+雙擊 `LocWarp.bat` 會自動提權並啟動 backend(`:8777`)與 Vite dev server(`:5173`),並用預設瀏覽器開啟。也可以手動啟動:
 
 ```bash
-# 終端 1, backend
+# 終端 1:backend
 cd backend && py -3.13 main.py
 
-# 終端 2a, 前端走瀏覽器(等同 LocWarp.bat 的行為)
+# 終端 2a:前端走瀏覽器
 cd frontend && npx vite --host --port 5173
 
-# 終端 2b, 前端走 Electron 視窗(同安裝檔執行體驗)
+# 終端 2b:前端走 Electron 視窗(跟安裝檔相同的執行方式)
 cd frontend && npm run start
 ```
 
-> 安裝檔(`LocWarp.Setup.x.x.x.exe`)跑的是 Electron 包;`LocWarp.bat` / `start.py` 是開發用,故走瀏覽器。要在開發環境裡測 Electron 視窗的行為(例如 IPC、分頁邏輯),用上面的 2b。
+> 開發模式走 `http://`,安裝檔走 `file://`,兩者行為不完全相同(例如 MapLibre 的 worker)。升級前端相依套件後,請務必用打包後的安裝檔驗證。
 
----
-
-## 打包(產出安裝檔)
-
-### 一次性安裝打包工具
+### 打包
 
 ```bash
+# 一次性安裝
 py -3.13 -m pip install pyinstaller
 cd frontend && npm install -D electron-builder
-```
 
-### 一鍵建置
-
-```bash
+# 一鍵建置
 build-installer.bat
 ```
 
-依序執行:
-1. **PyInstaller(3.13)** 編譯 backend(含 WiFi tunnel)→ `dist-py/locwarp-backend/`
-2. **Vite** 建置前端 → `frontend/dist/`
-3. **electron-builder** 產出 NSIS 安裝檔 → `frontend/release/LocWarp Setup X.Y.Z.exe`(~170 MB)
+`build-installer.bat` 依序執行:
 
-產物為單一 exe,使用者無需安裝 Python / Node / 任何套件。
+1. **PyInstaller** 編譯 backend 到 `dist-py/locwarp-backend/`
+2. **Vite** 建置前端到 `frontend/dist/`
+3. **electron-builder** 產出 `frontend/release/LocWarp Setup X.Y.Z.exe`(約 175 MB)
 
----
+注意 `npm run dist` 只執行第 3 步。改過 backend 要重跑 PyInstaller,改過前端或版本號要重跑 `npx vite build`,否則安裝檔會帶到舊的內容。
 
-## 使用者端需求
-
-**[下載安裝檔](https://github.com/keezxc1223/locwarp/releases)**
-
-使用安裝檔的使用者需要以下四項前置:
-
-### 1. 安裝 Apple USB driver
-
-Windows 需要 Apple 的 USB driver 才能與 iPhone 溝通。下列兩種方式**擇一**即可:
-
-- **傳統桌面版 iTunes**: [iTunes for Windows (64-bit)](https://secure-appldnld.apple.com/itunes12/047-76416-20260302-fefe4356-211d-4da1-8bc4-058eb36ea803/iTunes64Setup.exe)
-- **Microsoft Store 的 iTunes**: [商店頁面](https://apps.microsoft.com/detail/9pb2mz1zmb1s)
-- **Microsoft Store 的「Apple Devices」**(iTunes 兩個版本都不行時的備案): [商店頁面](https://apps.microsoft.com/detail/9np83lwlpz9k?hl=zh-TW&gl=TW)
-
-> **補充:** 三種擇一即可,裝一個就好。多數用戶裝桌面版 iTunes 就能用;若 iTunes(桌面版或 Microsoft Store 版)都抓不到 iPhone,社群回報改裝 **Apple Devices** 可以成功。
-
-### 2. USB 連接並信任此電腦
-
-首次使用前,用 USB 線接上 iPhone,iPhone 會跳「要信任這部電腦嗎?」,點 **信任** 並輸入密碼。這會產生 pair record,後續 LocWarp 才能與裝置通訊。
-
-### 3. 開啟開發人員模式(iOS 16+)
-
-iPhone 上:**設定 → 隱私權與安全性 → 開發者模式 → 開啟**
-
-開啟後裝置會要求重啟。重啟後會再次確認「啟用開發者模式?」,點啟用。
-
-### 4. WiFi Tunnel(選用)
-
-若要拔掉 USB 改走無線連線:
-- iPhone 與電腦必須在**同一個 WiFi 網段**
-- 第一次仍需要先用 USB 配對過(步驟 2)
-- LocWarp 內按 **Start WiFi Tunnel** 會建立 RSD tunnel,之後 USB 可拔除
-
-#### 連線模式差異
-
-| 連線方式 | 鎖屏影響 | 建議設定 |
-| --- | --- | --- |
-| **USB 有線** | ![Yes](https://img.shields.io/badge/可鎖屏-4caf50?style=flat-square) 可自由鎖定螢幕 | n/a |
-| **WiFi Tunnel** | ![No](https://img.shields.io/badge/不可鎖屏-f44336?style=flat-square) 鎖屏會導致網路介面休眠,Tunnel 中斷 | 建議關閉自動鎖定以維持連線 |
-
-> **注意:** **WiFi Tunnel 模式下 iPhone 螢幕熄滅會造成網路介面進入休眠狀態,導致 RSD Tunnel 中斷連線。**
->
-> 建議執行以下任一設定以避免連線中斷:
-> - **關閉自動鎖定**:設定 → 顯示與亮度 → 自動鎖定 → **永不**
-> - **保持 LocWarp 相關畫面於前景執行**(避免系統進入低功耗模式)
-> - **連接充電線並維持螢幕常亮**
->
-> 若僅透過 USB 連線使用,則無此限制,iPhone 可正常鎖屏不影響定位模擬。
-
----
-
-安裝後桌面/開始選單出現 **LocWarp** 捷徑。開啟時會要求管理員權限(WiFi tunnel 建 TUN 介面必需)。
-
----
-
-## 專案結構
+### 專案結構
 
 ```
 locwarp/
 ├── backend/                 # FastAPI + pymobiledevice3
 │   ├── api/                 # HTTP endpoints
-│   ├── core/                # Simulation engine + handlers
-│   │   ├── simulation_engine.py
-│   │   ├── navigator.py
-│   │   ├── route_loop.py
-│   │   ├── multi_stop.py
-│   │   ├── flower.py
-│   │   ├── random_walk.py
-│   │   ├── joystick.py
-│   │   └── device_manager.py
-│   ├── services/            # Location service, interpolator, bookmarks
+│   ├── core/                # Simulation engine + 各移動模式
+│   ├── services/            # 定位服務、地理編碼、座標收藏、路線
 │   ├── models/schemas.py    # Pydantic models
-│   ├── config.py            # Speed profiles, cooldown table
+│   ├── static/phone.html    # 手機網頁操控頁面
+│   ├── config.py            # 速度 profile、cooldown 表、路徑設定
 │   ├── main.py              # Entrypoint
 │   └── locwarp-backend.spec # PyInstaller spec
 │
 ├── frontend/                # Electron + React
-│   ├── electron/main.js     # Electron entry, spawns backend in packaged mode
+│   ├── electron/main.js     # Electron 進入點,打包模式下啟動 backend
 │   ├── src/
 │   │   ├── App.tsx
-│   │   ├── components/      # MapView, ControlPanel, EtaBar, etc.
+│   │   ├── components/      # MapView, ControlPanel, BookmarkList, StatusBar...
 │   │   ├── hooks/           # useSimulation, useDevice, useBookmarks
+│   │   ├── i18n/            # 中英文字串
 │   │   └── services/api.ts
-│   ├── build/icon.ico       # App icon
-│   └── package.json         # electron-builder config
+│   ├── build/               # 圖示與安裝程式圖片
+│   └── package.json         # electron-builder 設定
 │
-├── start.py                 # Dev launcher (used by LocWarp.bat)
+├── LocWarp.bat / start.py   # 開發用啟動器(自動提權)
 ├── stop.py
-├── LocWarp.bat              # Dev entry (auto-elevates)
-└── build-installer.bat      # Build installer (one-shot)
+└── build-installer.bat      # 一鍵建置安裝檔
 ```
 
 ---
 
-## 疑難排解
+## 支持與聯絡
 
-| 症狀 | 可能原因 / 解法 |
-| --- | --- |
-| Tunnel 啟動後 backend 連不上 | 確認以系統管理員身份啟動 |
-| `No such service: com.apple.instruments.dtservicehub` (iOS 17+/26) / LocWarp 跳「iPhone 上未偵測到 DDI」 | v0.2.58 起 LocWarp 不再自動掛 DDI,請用下列任一工具幫 iPhone 掛一次 DDI 後再回來使用:Xcode、愛思助手、3uTools、pymobiledevice3 CLI。也可先「設定 → 隱私權與安全性 → **開發者模式** 關閉,重開機,再次開啟」,然後用上述工具重新掛一次。 |
-| **開發者模式未顯示**(iOS 16+) | v0.2.61 起,LocWarp 連線後在狀態列會出現「**顯示開發者模式選項**」按鈕,點下去 iPhone 設定裡就會出現開發者模式(不用側載 IPA)。若按鈕失敗或想手動處理,可參考下方 [附錄:iPhone 開啟開發者模式(Windows 流程)](#附錄iphone-開啟開發者模式windows-流程) 的側載方式作為備援。 |
+有問題、建議,或想回報某個 iOS 版本可用,歡迎[加 LINE](https://lin.ee/UwdCrmf) 或到 [Issues](https://github.com/keezxc1223/locwarp/issues) 留言。
+
+### USDT 斗內(TRC-20 / TRON 鏈)
+
+LocWarp 免費且開源。想支持開發的話,可以使用下方地址。**僅支援 TRC-20(TRON 鏈)**,請勿使用其他鏈轉帳。
+
+```
+TB1i7pEcifAeh8oDLLZFqiRVrpUaZmmDAn
+```
+
+<p>
+  <img src="docs/donate-usdt-tron-qr.png" alt="USDT TRC-20 QR" width="260">
+</p>
 
 ---
 
-### 附錄:iPhone 開啟開發者模式(Windows 流程)
+## 專案性質聲明
 
-iOS 16+ 的「設定 → 隱私權與安全性 → 開發者模式」預設**不顯示**。Apple 要求裝置必須被開發者簽署之 App 部署過(或直接對 AMFI 服務下 reveal 指令),該選項才會出現。
+LocWarp 是個人獨立維護的開源專案,不是商業產品,也沒有專職團隊。開發者會盡力在合理時間內新增功能、回應 Issue、修復 Bug,並隨 iOS 與 pymobiledevice3 的版本演進持續更新,但是:
 
-#### 主要流程(推薦,v0.2.61 起)
-
-LocWarp 連上裝置後,狀態列會出現「**顯示開發者模式選項**」按鈕(僅在偵測到 iPhone 的 Developer Mode 未啟用時顯示)。點一下,後端呼叫 AMFI 服務幫 iPhone 寫下顯示 marker,然後:
-
-1. iPhone 上完全關掉「設定」App(從底部往上滑移除)
-2. 重新打開「設定」
-3. 「隱私權與安全性」往下拉,應該會看到「**開發者模式**」
-4. 點進去自行開啟(iPhone 會要求先關閉螢幕密碼 + 重啟一次)
-
-完成後 LocWarp 狀態列的按鈕會自動消失。
-
-#### 備援流程(側載 IPA)
-
-如果 LocWarp 的按鈕不能用(例如裝置沒透過 USB 連線,純 WiFi 模式下 AMFI 服務 advertising 不到),可改用傳統側載 IPA 方式:
-
-1. 安裝 [**Sideloadly**](https://sideloadly.io/)
-2. 於 [**Decrypt IPA Store**](https://decrypt.day/) 或 [**ARM Converter Decrypted App Store**](https://armconverter.com/decryptedappstore/us) 等解密 IPA 網站取得任意 IPA 檔案。建議挑選體積較小的檔案管理類 App 以縮短側載時間
-3. 將 IPA 拖入 Sideloadly 視窗
-4. USB 連接 iPhone,於 Sideloadly 輸入個人 Apple ID
-5. 按下 **Start** 執行側載,等待完成
-6. iPhone 上 設定 → 隱私權與安全性 → 滑至底部 → 會出現「**開發者模式**」,開啟該開關
-7. 系統提示重新啟動,重啟後再次確認開發者模式為開啟狀態
-
-完成後即可回到 LocWarp 建立連線。iOS 17+ 還需額外用 Xcode / 愛思助手 / 3uTools / pymobiledevice3 CLI 幫 iPhone 掛過一次 Developer Disk Image,LocWarp 本身不會自動掛(v0.2.58 起)。
+- 本專案只保證在**開發者本人的測試環境**(目前為 iPhone 18 Pro Max / iOS 27 + Windows 11 專業版)下運作正常;
+- **不保證在其他裝置、iOS 修補版本、網路環境、系統配置下都能穩定使用**;
+- 遇到問題時,歡迎到 [Issues](https://github.com/keezxc1223/locwarp/issues) 提交完整的環境資訊與日誌,協助定位與改善;
+- 本專案不保證永續維護,也不承擔因使用本工具所生的任何責任。
 
 ---
 
 ## License
 
-本專案採用 **MIT License** 授權釋出, 詳見 [LICENSE](LICENSE)。
+本專案採用 **MIT License** 授權釋出,詳見 [LICENSE](LICENSE)。
 
 允許自由使用、修改、再散佈與商業利用,惟須保留原始著作權與授權聲明。
 
@@ -579,11 +468,11 @@ LocWarp 連上裝置後,狀態列會出現「**顯示開發者模式選項**」�
 
 ### 4. 地圖資料準確性
 
-本專案前端採用 Leaflet,底圖由 OpenStreetMap 及其衍生供應商提供,路線規劃與地理編碼則使用 OSRM 與 Nominatim 公共 API。地圖顯示之座標、路徑、地址資訊**僅供參考**,開發者不保證其完整性、即時性、正確性或與實際地理位置完全一致。使用者在依照地址搜尋、路線導航、隨機漫步等結果進行定位模擬前,應自行比對地圖顯示是否符合預期。
+本專案前端採用 Leaflet,底圖由 OpenStreetMap 及其他第三方圖磚供應商提供,路線規劃使用 OSRM、Valhalla 與 BRouter 公共服務,地理編碼使用 Photon 等公共服務。地圖顯示之座標、路徑、地址資訊**僅供參考**,開發者不保證其完整性、即時性、正確性或與實際地理位置完全一致。使用者在依照地址搜尋、路線導航、隨機漫步等結果進行定位模擬前,應自行比對地圖顯示是否符合預期。
 
 ### 5. 使用者責任
 
-使用者應自行遵守所在地之法律法規,包括但不限於《個人資料保護法》《電腦處理個人資料保護法》《著作權法》及相關國際條約。任何因濫用、誤用或違法使用本工具所引發之法律糾紛、民事賠償或刑事責任,均由使用者個人獨自承擔,與本專案之開發者及貢獻者無涉。
+使用者應自行遵守所在地之法律法規,包括但不限於《個人資料保護法》《著作權法》及相關國際條約。任何因濫用、誤用或違法使用本工具所引發之法律糾紛、民事賠償或刑事責任,均由使用者個人獨自承擔,與本專案之開發者及貢獻者無涉。
 
 ---
 
