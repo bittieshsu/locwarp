@@ -68,7 +68,7 @@ Each step is covered in detail under [Installation and setup](#installation-and-
 
 | Major | Verified versions |
 | --- | --- |
-| **iOS 27.x** | 27 (tested by the developer on iPhone 18 Pro Max) |
+| **iOS 27.x** | 27.0 (tested by the developer on iPhone 18 Pro Max) |
 | **iOS 26.x** | 26.5 · 26.4.2 · 26.4.1 · 26.4.1 iPadOS · 26.4 · 26.3.1 · 26.2 · 26.2.1 iPadOS (M1 iPad) |
 | **iOS 18.x** | 18.7.8 · 18.7.7 · 18.7.1 · 18.6.2 · 18.5 iPadOS · 18.3.1 · 18.1.1 |
 | **iOS 17.x** | 17.6.1 |
@@ -243,7 +243,7 @@ With the Wi-Fi Tunnel, set Settings → Display & Brightness → Auto-Lock to **
 | The tunnel starts but nothing connects | Make sure LocWarp runs as administrator, and try again with VPN or third-party firewall software turned off |
 | Wi-Fi auto-detect finds no device | Check that both are on the same Wi-Fi subnet and that the router has no client or AP isolation. Entering the IP by hand also works |
 | `No such service: com.apple.instruments.dtservicehub`, or "No DDI detected" | Mount the DDI as described in [step 4](#4-mount-the-developer-disk-image-ios-17). If it still fails, turn Developer Mode off, reboot, turn it back on, and mount again |
-| Developer Mode is missing from Settings | See [step 3](#3-turn-on-developer-mode) |
+| Developer Mode is missing from the iPhone Settings | With the device connected, open the Settings tab at the top of LocWarp and press "Enable Developer Mode", then close and reopen the iPhone Settings app as described in [step 3](#3-turn-on-developer-mode). If the button does not work, use the [sideloading fallback](#appendix-revealing-developer-mode-by-sideloading) |
 | Ghosting or a black window | Turn off hardware acceleration in the Settings tab |
 | The flag or place name does not appear | Both come from free public services that are sometimes briefly unresponsive. Teleport again a little later |
 
@@ -431,7 +431,7 @@ TB1i7pEcifAeh8oDLLZFqiRVrpUaZmmDAn
 
 LocWarp is an open-source project maintained by one person. It is not a commercial product and has no dedicated team. The developer will do their best to add features, answer issues, fix bugs, and keep up with iOS and pymobiledevice3 releases within a reasonable time. However:
 
-- The project is only guaranteed to work in **the developer's own test environment** (currently iPhone 18 Pro Max / iOS 27 + Windows 11 Pro);
+- The project is only guaranteed to work in **the developer's own test environment** (currently iPhone 18 Pro Max / iOS 27.0 + Windows 11 Pro);
 - It is **not guaranteed to run reliably on other devices, iOS patch versions, networks, or system configurations**;
 - If you run into a problem, please open an [Issue](https://github.com/keezxc1223/locwarp/issues) with full environment details and logs to help track it down;
 - Ongoing maintenance is not guaranteed, and no liability is accepted for anything arising from use of this tool.
