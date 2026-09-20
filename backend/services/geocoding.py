@@ -10,19 +10,34 @@ Forward search supports three providers selected per-request:
 * ``google`` — Google Geocoding API. Requires the user's own API key;
   10k free events / month with the Essentials tier.
 
-Reverse geocoding always uses Nominatim because it feeds country flag +
-short-name picking inside the UI; switching that pipeline would touch a
-lot of unrelated code paths.
+Reverse geocoding uses Photon. It feeds the country flag + short name in
+the status bar and the bookmark flags, so it has to work for every user;
+the public Nominatim instance answers this app's User-Agent with HTTP 403.
+For the same reason a ``nominatim`` forward search that gets refused is
+served by Photon for the rest of the session.
+
+Photon is a free community service too, so reverse results are cached on
+disk per ~100 m cell: teleporting back to a saved spot, bouncing between
+two points, or the status bar and the recent-places list asking about the
+same coordinate never costs a second request.
 """
 
 from __future__ import annotations
 
+import asyncio
+import json
 import logging
+import time
 
 import httpx
 from fastapi import HTTPException
 
-from config import NOMINATIM_BASE_URL, NOMINATIM_USER_AGENT, PHOTON_BASE_URL
+from config import (
+    NOMINATIM_BASE_URL,
+    NOMINATIM_USER_AGENT,
+    PHOTON_BASE_URL,
+    REVERSE_GEOCODE_CACHE_FILE,
+)
 from models.schemas import GeocodingResult
 
 logger = logging.getLogger(__name__)
@@ -30,9 +45,18 @@ logger = logging.getLogger(__name__)
 _TIMEOUT = httpx.Timeout(10.0, connect=5.0)
 _GOOGLE_GEOCODE_URL = "https://maps.googleapis.com/maps/api/geocode/json"
 
+# Reverse cache: 3 decimals is a ~110 m cell, fine for a flag + place label.
+_REVERSE_CACHE_DECIMALS = 3
+_REVERSE_CACHE_MAX = 1000
+_REVERSE_CACHE_TTL_S = 30 * 24 * 3600
+
 
 class GeocodingService:
     """Async wrapper around forward / reverse geocoding."""
+
+    # Set once Nominatim refuses us (403 / 429) so later searches go
+    # straight to Photon instead of re-hitting a server that said no.
+    _nominatim_refused = False
 
     def _headers(self) -> dict[str, str]:
         return {
@@ -59,9 +83,19 @@ class GeocodingService:
                     detail="provider=google requires google_key",
                 )
             return await self._search_google(query, limit, google_key)
-        if provider == "photon":
+        if provider == "photon" or GeocodingService._nominatim_refused:
             return await self._search_photon(query, limit)
-        return await self._search_nominatim(query, limit)
+        try:
+            return await self._search_nominatim(query, limit)
+        except httpx.HTTPStatusError as exc:
+            if exc.response.status_code not in (403, 429):
+                raise
+            logger.warning(
+                "Nominatim refused search (HTTP %d), using Photon for this session",
+                exc.response.status_code,
+            )
+            GeocodingService._nominatim_refused = True
+            return await self._search_photon(query, limit)
 
     async def _search_nominatim(self, query: str, limit: int) -> list[GeocodingResult]:
         params = {
@@ -113,41 +147,9 @@ class GeocodingService:
 
         results: list[GeocodingResult] = []
         for feat in data.get("features", []):
-            try:
-                coords = feat["geometry"]["coordinates"]
-                lng, lat = float(coords[0]), float(coords[1])
-                props = feat.get("properties") or {}
-                name = (props.get("name") or "").strip()
-                # Build a Nominatim-style "specific, generic, country" line.
-                parts: list[str] = []
-                if name:
-                    parts.append(name)
-                house = props.get("housenumber")
-                street = props.get("street")
-                if house and street:
-                    parts.append(f"{street} {house}")
-                elif street:
-                    parts.append(street)
-                for key in ("district", "city", "county", "state", "country"):
-                    v = props.get(key)
-                    if v and v not in parts:
-                        parts.append(v)
-                display = ", ".join(parts) if parts else (name or query)
-                results.append(
-                    GeocodingResult(
-                        display_name=display,
-                        lat=lat,
-                        lng=lng,
-                        # Photon's "type" is the OSM tag value (e.g. "city"),
-                        # mirror it into our `type` field for compat.
-                        type=props.get("type") or props.get("osm_value") or "",
-                        importance=0.0,
-                        country_code=(props.get("countrycode") or "").lower(),
-                        short_name=name,
-                    )
-                )
-            except (KeyError, ValueError, TypeError) as exc:
-                logger.warning("Skipping malformed Photon result: %s", exc)
+            r = _photon_feature_to_result(feat, query)
+            if r:
+                results.append(r)
         return results
 
     async def _search_google(
@@ -208,88 +210,142 @@ class GeocodingService:
     # Reverse geocoding
     # ------------------------------------------------------------------
 
-    async def reverse(self, lat: float, lng: float) -> GeocodingResult | None:
+    async def reverse(
+        self, lat: float, lng: float, precise: bool = False
+    ) -> GeocodingResult | None:
         """Reverse geocode: coordinates -> address.
 
-        Returns ``None`` when no result is found.
+        Returns ``None`` when no result is found. ``precise`` skips the
+        cache read for callers that name a saved spot or answer "what's
+        here", where a neighbour's label from the same cell would be wrong.
         """
-        params = {
-            "lat": lat,
-            "lon": lng,
-            "format": "json",
-            "addressdetails": 1,  # needed so response includes address.country_code
-        }
+        key = f"{lat:.{_REVERSE_CACHE_DECIMALS}f},{lng:.{_REVERSE_CACHE_DECIMALS}f}"
+        if not precise:
+            hit = _reverse_cache_get(key)
+            if hit is not _MISS:
+                return hit
+            # Same cell already being fetched (status bar + recent-places
+            # fire together on every teleport): share that request.
+            pending = _reverse_inflight.get(key)
+            if pending is not None:
+                return await asyncio.shield(pending)
 
-        logger.debug("Nominatim reverse: %.6f, %.6f", lat, lng)
+        task = asyncio.ensure_future(self._reverse_photon(lat, lng))
+        if not precise:
+            _reverse_inflight[key] = task
+        try:
+            result = await asyncio.shield(task)
+        finally:
+            if _reverse_inflight.get(key) is task:
+                del _reverse_inflight[key]
+        _reverse_cache_put(key, result)
+        return result
+
+    async def _reverse_photon(self, lat: float, lng: float) -> GeocodingResult | None:
+        logger.debug("Photon reverse: %.6f, %.6f", lat, lng)
 
         async with httpx.AsyncClient(timeout=_TIMEOUT) as client:
             resp = await client.get(
-                f"{NOMINATIM_BASE_URL}/reverse",
-                params=params,
-                headers=self._headers(),
+                f"{PHOTON_BASE_URL}/reverse",
+                params={"lat": lat, "lon": lng},
+                headers={"User-Agent": NOMINATIM_USER_AGENT},
             )
             resp.raise_for_status()
             data = resp.json()
 
-        if "error" in data:
-            logger.info("Nominatim reverse returned error: %s", data["error"])
-            return None
+        for feat in data.get("features", []):
+            r = _photon_feature_to_result(feat, "")
+            if r:
+                return r
+        return None
 
+
+# key -> [saved_at, result dict | None]. Insertion-ordered, oldest first.
+_MISS = object()
+_reverse_cache: dict[str, list] | None = None
+_reverse_inflight: dict[str, asyncio.Future] = {}
+
+
+def _reverse_cache_load() -> dict[str, list]:
+    global _reverse_cache
+    if _reverse_cache is None:
         try:
-            addr = data.get("address") or {}
-            display_name = data.get("display_name", "")
-            short = _pick_short_name(addr, data.get("name") or "", display_name)
-            return GeocodingResult(
-                display_name=display_name,
-                lat=float(data["lat"]),
-                lng=float(data["lon"]),
-                type=data.get("type", ""),
-                importance=float(data.get("importance", 0)),
-                country_code=(addr.get("country_code") or "").lower(),
-                short_name=short,
-            )
-        except (KeyError, ValueError) as exc:
-            logger.warning("Failed to parse reverse result: %s", exc)
-            return None
+            raw = json.loads(REVERSE_GEOCODE_CACHE_FILE.read_text(encoding="utf-8"))
+            _reverse_cache = raw if isinstance(raw, dict) else {}
+        except (OSError, ValueError):
+            _reverse_cache = {}
+    return _reverse_cache
 
 
-def _pick_short_name(addr: dict, name: str, display_name: str) -> str:
-    """Pick a human-friendly short label from Nominatim's address details.
+def _reverse_cache_get(key: str):
+    entry = _reverse_cache_load().get(key)
+    if not entry:
+        return _MISS
+    try:
+        saved_at, payload = entry
+        if time.time() - float(saved_at) > _REVERSE_CACHE_TTL_S:
+            return _MISS
+        return GeocodingResult(**payload) if payload else None
+    except (TypeError, ValueError):
+        return _MISS
 
-    Nominatim's display_name leads with the most granular component first
-    (e.g. house number, then road, then suburb), which means naively taking
-    the first comma-separated segment gives noise like '6' or '6號'. Prefer
-    named POIs / features when present, then the street, then a region.
-    """
-    # Nominatim sometimes sets `name` at the top level for POIs.
-    if name and len(name) > 1:
-        return name.strip()
-    # Address-level POI tags (ordered by how specific they are).
-    poi_keys = (
-        "tourism", "attraction", "building",
-        "amenity", "shop", "leisure", "office",
-        "historic", "public_transport", "railway",
-    )
-    for k in poi_keys:
-        v = addr.get(k)
-        if v and isinstance(v, str) and len(v) > 1:
-            return v.strip()
-    # Fall through to street / area names.
-    for k in ("road", "pedestrian", "footway", "path"):
-        v = addr.get(k)
-        if v:
-            return v.strip()
-    for k in ("neighbourhood", "hamlet", "village", "suburb", "quarter"):
-        v = addr.get(k)
-        if v:
-            return v.strip()
-    for k in ("city_district", "town", "city", "municipality", "county"):
-        v = addr.get(k)
-        if v:
-            return v.strip()
-    # As a last resort, return the first comma segment that looks like a name
-    # (length > 2 and not purely digits / house-number-ish).
-    for seg in (s.strip() for s in display_name.split(",")):
-        if len(seg) > 2 and not seg.replace("號", "").strip().isdigit():
-            return seg
-    return display_name.split(",")[0].strip() if display_name else ""
+
+def _reverse_cache_put(key: str, result: GeocodingResult | None) -> None:
+    cache = _reverse_cache_load()
+    cache.pop(key, None)
+    cache[key] = [time.time(), result.model_dump() if result else None]
+    while len(cache) > _REVERSE_CACHE_MAX:
+        del cache[next(iter(cache))]
+    try:
+        REVERSE_GEOCODE_CACHE_FILE.write_text(
+            json.dumps(cache, ensure_ascii=False), encoding="utf-8"
+        )
+    except OSError as exc:
+        logger.info("Could not persist reverse geocode cache: %s", exc)
+
+
+def _photon_feature_to_result(feat: dict, fallback_name: str) -> GeocodingResult | None:
+    """Convert one Photon GeoJSON feature into a GeocodingResult."""
+    try:
+        coords = feat["geometry"]["coordinates"]
+        lng, lat = float(coords[0]), float(coords[1])
+        props = feat.get("properties") or {}
+        name = (props.get("name") or "").strip()
+        # Build a Nominatim-style "specific, generic, country" line.
+        parts: list[str] = []
+        if name:
+            parts.append(name)
+        house = props.get("housenumber")
+        street = props.get("street")
+        if house and street:
+            parts.append(f"{street} {house}")
+        elif street:
+            parts.append(street)
+        for key in ("district", "city", "county", "state", "country"):
+            v = props.get(key)
+            if v and v not in parts:
+                parts.append(v)
+        display = ", ".join(parts) if parts else (name or fallback_name)
+        # Unnamed features (plain addresses) still need a label for the
+        # status bar / bookmark name: street first, then the area.
+        short = name
+        if len(short) < 2:
+            for key in ("street", "locality", "district", "city", "county", "state"):
+                v = props.get(key)
+                if v and len(str(v).strip()) > 1:
+                    short = str(v).strip()
+                    break
+        return GeocodingResult(
+            display_name=display,
+            lat=lat,
+            lng=lng,
+            # Photon's "type" is the OSM tag value (e.g. "city"),
+            # mirror it into our `type` field for compat.
+            type=props.get("type") or props.get("osm_value") or "",
+            importance=0.0,
+            country_code=(props.get("countrycode") or "").lower(),
+            short_name=short,
+        )
+    except (KeyError, ValueError, TypeError) as exc:
+        logger.warning("Skipping malformed Photon result: %s", exc)
+        return None

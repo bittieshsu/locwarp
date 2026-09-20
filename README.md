@@ -179,7 +179,7 @@ TB1i7pEcifAeh8oDLLZFqiRVrpUaZmmDAn
 ### 地圖與輔助
 
 - **地圖定位按鈕**(左上角):一鍵置中目前虛擬位置
-- **圖層切換**(右上角):OSM / CartoDB Voyager / ESRI 衛星 / OpenFreeMap Liberty(類 Google Maps 風格向量圖) / NLSC 台灣電子地圖 / GSI 日本地理院地圖
+- **圖層切換**(右上角):OSM / Google 圖磚(測試) / ESRI 街道 / ESRI 衛星 / OpenFreeMap Liberty、Bright、Positron(向量圖) / VersaTiles Colorful / NLSC 台灣電子地圖 / GSI 日本地理院地圖
 - **當地天氣**:狀態列顯示虛擬位置的當前天氣 + 溫度(Open-Meteo,動態 SVG 圖示:太陽呼吸、雨滴下落、雪花旋轉、雷電閃爍)
 - **國旗與時區**:瞬移後自動顯示當地國旗,跨時區時 toast 提醒時差
 - **地圖釘 / 使用者頭像**(狀態列):
@@ -295,13 +295,12 @@ TB1i7pEcifAeh8oDLLZFqiRVrpUaZmmDAn
 | [OSRM FOSSGIS 鏡像](https://routing.openstreetmap.de/) | backend | 同 OSRM 引擎,可在「路徑來源」切換為備援 | 否 |
 | [Valhalla(FOSSGIS)](https://valhalla1.openstreetmap.de/) | backend | 不同的路徑引擎,「路徑來源」第三個選項,OSRM 全掛時可用 | 否 |
 | [BRouter](https://brouter.de/) | backend | 第四個獨立引擎,OSM 資料 + 自家路徑引擎,涵蓋全球,單車 / 健行 / 開車 profile 齊全 | 否 |
-| [Nominatim](https://nominatim.openstreetmap.org/) | backend | 正向 / 反向地理編碼、地名查詢(含 POI 智慧 short_name 選擇,預設地址搜尋來源) | 否 |
-| [Photon (komoot)](https://photon.komoot.io/) | backend | 地址搜尋第二供應商(v0.2.149+),模糊搜尋 / 容錯字比 Nominatim 強 | 否 |
+| [Nominatim](https://nominatim.openstreetmap.org/) | backend | 地址搜尋預設來源(被拒絕時自動改用 Photon) | 否 |
+| [Photon (komoot)](https://photon.komoot.io/) | backend | 反向地理編碼(國旗、地名)與地址搜尋,模糊搜尋 / 容錯字比 Nominatim 強 | 否 |
 | [Google Geocoding API](https://developers.google.com/maps/documentation/geocoding) | backend | 地址搜尋備援來源(可選,免費 10K req/月);使用者於設定輸入自己的 API Key | 是(使用者自備) |
 | [Open-Meteo](https://open-meteo.com/) | **frontend(直連)** | 虛擬位置當地天氣(氣溫 + WMO weather_code);每個用戶自己 IP 各自 10000 req/day | 否 |
 | [TimezoneDB](https://timezonedb.com/) | backend | 座標 → 時區 + GMT 偏移,跨時區 toast 提醒 | 是(內建 Key) |
 | [flagcdn.com](https://flagcdn.com/) | frontend | 國旗 PNG(`w20/{cc}.png`、`w40/{cc}.png`) | 否 |
-| [CartoDB Voyager](https://carto.com/) | frontend tile | 地圖底圖(OSM 資料,免費授權) | 否 |
 | [ESRI World Imagery](https://www.esri.com/) | frontend tile | 衛星圖層(圖層切換) | 否 |
 | [OpenFreeMap Liberty](https://openfreemap.org/) | frontend tile | 向量圖層(類 Google Maps 風格,經 MapLibre GL 渲染) | 否 |
 | [NLSC 國土測繪中心](https://maps.nlsc.gov.tw/) | frontend tile | 台灣電子地圖(政府公開資料) | 否 |
@@ -337,7 +336,7 @@ TB1i7pEcifAeh8oDLLZFqiRVrpUaZmmDAn
 - **速度解析**:`config.resolve_speed_profile(mode, speed_kmh, speed_min_kmh, speed_max_kmh)` 統一處理「模式預設 / 固定自訂 / 隨機範圍」三種輸入,優先序 `range > 固定 > 預設`
 - **In-process WiFi tunnel**:backend 自 v0.2.3 起直接在主 event loop 內執行 `start_tcp_tunnel()`,不再 spawn 獨立 helper exe
 - **Runtime 狀態目錄**:一律寫入 `~/.locwarp/`(bookmarks / settings / tunnel info),避免 PyInstaller 的 `_MEIPASS` 臨時目錄問題
-- **Tile referer / OSM 替換**:OSM 的 tile 服務封鎖散佈型應用,已改用 CartoDB(OSM 資料源、CARTO 代管 CDN、免 referer)
+- **Tile User-Agent**:OSM 的 tile 服務會擋下預設的 Chromium UA,程式會對 OSM 的圖磚請求改寫為可識別的 User-Agent
 - **多裝置群組模式**(三裝置上限):同步瞬移 / 同步移動,primary 不被後插裝置搶走,後插的裝置自動同步到 primary 的位置並接續 primary 正在執行的任務(fanout)
 - **Idle-gated 地理查詢**:reverse geocode + timezone + 天氣僅在 idle / teleport / disconnect 狀態且位置變動 ≥ 100m 才觸發,避免跑動態模式時 HTTP 對 DVT 頻道產生 contention
 - **並行查詢地理資訊**(v0.2.147+):國旗 / 地標 / 時差 / 天氣同時打,單一服務慢時其他資訊不再跟著卡住
@@ -580,7 +579,7 @@ LocWarp 連上裝置後,狀態列會出現「**顯示開發者模式選項**」�
 
 ### 4. 地圖資料準確性
 
-本專案前端採用 Leaflet,底圖由 OpenStreetMap 之衍生供應商(CartoDB)提供,路線規劃與地理編碼則使用 OSRM 與 Nominatim 公共 API。地圖顯示之座標、路徑、地址資訊**僅供參考**,開發者不保證其完整性、即時性、正確性或與實際地理位置完全一致。使用者在依照地址搜尋、路線導航、隨機漫步等結果進行定位模擬前,應自行比對地圖顯示是否符合預期。
+本專案前端採用 Leaflet,底圖由 OpenStreetMap 及其衍生供應商提供,路線規劃與地理編碼則使用 OSRM 與 Nominatim 公共 API。地圖顯示之座標、路徑、地址資訊**僅供參考**,開發者不保證其完整性、即時性、正確性或與實際地理位置完全一致。使用者在依照地址搜尋、路線導航、隨機漫步等結果進行定位模擬前,應自行比對地圖顯示是否符合預期。
 
 ### 5. 使用者責任
 

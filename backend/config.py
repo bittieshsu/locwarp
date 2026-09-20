@@ -8,6 +8,7 @@ SETTINGS_FILE = DATA_DIR / "settings.json"
 BOOKMARKS_FILE = DATA_DIR / "bookmarks.json"
 ROUTES_FILE = DATA_DIR / "routes.json"
 RECENT_PLACES_FILE = DATA_DIR / "recent_places.json"
+REVERSE_GEOCODE_CACHE_FILE = DATA_DIR / "reverse_geocode_cache.json"
 # Persisted UDID → DeviceName cache. Populated whenever USB / usbmuxd
 # exposes the user's actual DeviceName (e.g. "My iPhone") so a later
 # WiFi-only session — where peer_info only carries DeviceClass ("iPhone")

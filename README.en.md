@@ -179,7 +179,7 @@ Operate LocWarp from your phone without walking back to the computer. The "**Pho
 ### Map & Utilities
 
 - **Recenter button** (top-left): centers the map on the current virtual position
-- **Tile layer switcher** (top-right): OSM / CartoDB Voyager / ESRI Satellite / OpenFreeMap Liberty (Google-Maps-style vector tiles) / NLSC (Taiwan) / GSI (Japan)
+- **Tile layer switcher** (top-right): OSM / Google Tiles (Beta) / ESRI Street Map / ESRI Satellite / OpenFreeMap Liberty, Bright, Positron (vector tiles) / VersaTiles Colorful / NLSC (Taiwan) / GSI (Japan)
 - **Local weather**: status bar shows current weather + temp for the virtual location (Open-Meteo, animated SVG icons: breathing sun, falling rain, spinning snow, flashing lightning)
 - **Country flag & timezone**: flag appears automatically after teleport; a toast warns about time-zone diff when moving across zones
 - **Map pin / user avatar** (status bar):
@@ -295,13 +295,12 @@ Operate LocWarp from your phone without walking back to the computer. The "**Pho
 | [OSRM FOSSGIS mirror](https://routing.openstreetmap.de/) | backend | Same OSRM engine, selectable as an alternative routing source | No |
 | [Valhalla (FOSSGIS)](https://valhalla1.openstreetmap.de/) | backend | Different routing engine, third option in the routing-source picker; useful when OSRM is down | No |
 | [BRouter](https://brouter.de/) | backend | Fourth independent engine, OSM data + custom routing engine, full bike / hike / car profiles | No |
-| [Nominatim](https://nominatim.openstreetmap.org/) | backend | Default forward / reverse geocoding, place-name lookup (with POI-aware short_name picker) | No |
-| [Photon (komoot)](https://photon.komoot.io/) | backend | Second address-search provider (v0.2.149+), better fuzzy / typo-tolerant matching than Nominatim | No |
+| [Nominatim](https://nominatim.openstreetmap.org/) | backend | Default address-search provider (falls back to Photon when refused) | No |
+| [Photon (komoot)](https://photon.komoot.io/) | backend | Reverse geocoding (country flag, place name) and address search, better fuzzy / typo-tolerant matching than Nominatim | No |
 | [Google Geocoding API](https://developers.google.com/maps/documentation/geocoding) | backend | Optional secondary geocoding source (10K req/month free); user supplies their own API key in settings | Yes (user-supplied) |
 | [Open-Meteo](https://open-meteo.com/) | **frontend (direct)** | Current weather at virtual location (temp + WMO weather_code); each user has their own 10,000 req/day per IP | No |
 | [TimezoneDB](https://timezonedb.com/) | backend | Coords → timezone + GMT offset, cross-zone toast | Yes (bundled) |
 | [flagcdn.com](https://flagcdn.com/) | frontend | Country flag PNGs (`w20/{cc}.png`, `w40/{cc}.png`) | No |
-| [CartoDB Voyager](https://carto.com/) | frontend tile | Map tiles (OSM data, redistributable license) | No |
 | [ESRI World Imagery](https://www.esri.com/) | frontend tile | Satellite layer (tile switcher) | No |
 | [OpenFreeMap Liberty](https://openfreemap.org/) | frontend tile | Vector tiles (Google-Maps-style, rendered via MapLibre GL) | No |
 | [NLSC (Taiwan)](https://maps.nlsc.gov.tw/) | frontend tile | Taiwan official basemap (government open data) | No |
@@ -337,7 +336,7 @@ Operate LocWarp from your phone without walking back to the computer. The "**Pho
 - **Speed resolution**: `config.resolve_speed_profile(mode, speed_kmh, speed_min_kmh, speed_max_kmh)` unifies "mode default / fixed custom / random range" inputs; priority `range > fixed > default`
 - **In-process Wi-Fi tunnel**: since v0.2.3 the backend runs `start_tcp_tunnel()` on its own event loop instead of spawning a helper exe
 - **Runtime state directory**: everything goes to `~/.locwarp/` (bookmarks / settings / tunnel info) to avoid PyInstaller's `_MEIPASS` temp-dir issues
-- **Tile referer / OSM swap**: OSM blocks distributable apps on their public tiles, so CartoDB (OSM data hosted on CARTO's CDN, no referer needed) is the default
+- **Tile User-Agent**: OSM's tile servers reject the default Chromium UA, so requests to the OSM tile hosts are sent with an identifying User-Agent
 - **Multi-device group mode** (v0.2.0+, up to 3 devices): synchronized teleport / movement, primary is never hijacked by a late-plugged device, late joiners sync to the primary's position and auto-resume whatever sim it's running (fanout)
 - **Idle-gated geocoding**: reverse geocode + timezone + weather lookups only fire when state is idle / teleport / disconnect AND position moved ≥ 100m; prevents HTTP contending with the DVT channel during active sim
 - **Parallel geo lookups** (v0.2.147+): flag / place name / timezone / weather fire concurrently; a slow single service no longer blocks the others
@@ -537,7 +536,7 @@ Users bear any consequences resulting from the above. The project only manipulat
 
 ### 4. Map Data Accuracy
 
-LocWarp uses Leaflet on the frontend, tiles served by an OpenStreetMap-derived provider (CartoDB), and OSRM + Nominatim for routing and geocoding. Coordinates, routes, and addresses are **for reference only**. The developer does not guarantee completeness, real-time accuracy, or exact correspondence to real-world geography. Before relying on address search, route navigation, or random-walk results for simulation, users should verify that the displayed data matches expectations.
+LocWarp uses Leaflet on the frontend, tiles served by OpenStreetMap and OSM-derived providers, and OSRM + Nominatim for routing and geocoding. Coordinates, routes, and addresses are **for reference only**. The developer does not guarantee completeness, real-time accuracy, or exact correspondence to real-world geography. Before relying on address search, route navigation, or random-walk results for simulation, users should verify that the displayed data matches expectations.
 
 ### 5. User Responsibility
 

@@ -672,17 +672,6 @@ const MapView: React.FC<MapViewProps> = ({
       subdomains: 'abc', maxZoom: 19,
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
     });
-    // CartoDB Voyager: OSM data, CARTO-hosted CDN. No OSM rate-limit risk,
-    // built-in @2x retina, 4 subdomains. Use this when OSM feels laggy.
-    const cartoLayer = L.tileLayer(
-      'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png',
-      {
-        ...baseOpts,
-        subdomains: 'abcd', maxZoom: 20,
-        attribution:
-          '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
-      },
-    );
     // ESRI World Imagery — free satellite/aerial imagery, global coverage.
     // URL template uses {y}/{x} order (ESRI convention), not the usual
     // {x}/{y}. No API key needed, generous usage limits.
@@ -695,6 +684,25 @@ const MapView: React.FC<MapViewProps> = ({
           'Tiles &copy; Esri &mdash; Source: Esri, Maxar, Earthstar Geographics, and the GIS User Community',
       },
     );
+    // ESRI World Street Map — same server and {y}/{x} convention as World
+    // Imagery, no API key. Labels are mostly English outside the US.
+    const esriStreetLayer = L.tileLayer(
+      'https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}',
+      {
+        ...baseOpts,
+        maxZoom: 19,
+        attribution:
+          'Tiles &copy; Esri &mdash; Source: Esri, HERE, Garmin, USGS, NGA, and the GIS User Community',
+      },
+    );
+    // Google road map tiles. Undocumented endpoint with no API key and no
+    // service guarantee, so it may stop working at any time. Labelled as
+    // experimental in the layer picker for that reason.
+    const googleLayer = L.tileLayer('https://mt{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}', {
+      ...baseOpts,
+      subdomains: '0123', maxZoom: 20,
+      attribution: 'Map data &copy; Google',
+    });
     // OpenFreeMap Liberty — free, no API key, vector tiles styled to look
     // close to Mapbox / Google. Rendered via MapLibre GL through the
     // maplibre-gl-leaflet binding so Leaflet treats it like any other
@@ -704,6 +712,24 @@ const MapView: React.FC<MapViewProps> = ({
       style: 'https://tiles.openfreemap.org/styles/liberty',
       attribution:
         '&copy; <a href="https://openfreemap.org/" target="_blank" rel="noopener">OpenFreeMap</a> &copy; <a href="https://www.openmaptiles.org/" target="_blank" rel="noopener">OpenMapTiles</a> &copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a> contributors',
+    }) as L.Layer;
+    // Two more OpenFreeMap styles on the same tile source: Bright is the
+    // classic OSM-like palette, Positron a light minimal basemap.
+    const openFreeMapAttribution =
+      '&copy; <a href="https://openfreemap.org/" target="_blank" rel="noopener">OpenFreeMap</a> &copy; <a href="https://www.openmaptiles.org/" target="_blank" rel="noopener">OpenMapTiles</a> &copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a> contributors';
+    const brightLayer = (L as any).maplibreGL({
+      style: 'https://tiles.openfreemap.org/styles/bright',
+      attribution: openFreeMapAttribution,
+    }) as L.Layer;
+    const positronLayer = (L as any).maplibreGL({
+      style: 'https://tiles.openfreemap.org/styles/positron',
+      attribution: openFreeMapAttribution,
+    }) as L.Layer;
+    // VersaTiles Colorful — community-run free vector tiles, no API key.
+    const versaLayer = (L as any).maplibreGL({
+      style: 'https://tiles.versatiles.org/assets/styles/colorful/style.json',
+      attribution:
+        '&copy; <a href="https://versatiles.org/" target="_blank" rel="noopener">VersaTiles</a> &copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a> contributors',
     }) as L.Layer;
 
     // NLSC 通用版電子地圖 — Taiwan government basemap (內政部國土測繪中心).
@@ -739,31 +765,61 @@ const MapView: React.FC<MapViewProps> = ({
       try { return localStorage.getItem('locwarp.tile_layer') || 'osm'; }
       catch { return 'osm'; }
     })();
-    const layers: Record<string, L.Layer> = {
-      'OSM': osmLayer,
-      'CartoDB Voyager': cartoLayer,
-      'ESRI 衛星 / Satellite': esriSatLayer,
-      'OpenFreeMap Liberty': libertyLayer,
-      'NLSC 台灣電子地圖': nlscLayer,
-      'GSI 日本地理院地圖': gsiLayer,
+    // [storage key, picker label, layer] in picker order.
+    const layerDefs: Array<[string, string, L.Layer]> = [
+      ['osm', 'OSM', osmLayer],
+      ['google', 'Google 圖磚 (測試) / Google Tiles (Beta)', googleLayer],
+      ['esri_street', 'ESRI 街道 / Street Map', esriStreetLayer],
+      ['esri', 'ESRI 衛星 / Satellite', esriSatLayer],
+      ['liberty', 'OpenFreeMap Liberty', libertyLayer],
+      ['bright', 'OpenFreeMap Bright', brightLayer],
+      ['positron', 'OpenFreeMap Positron', positronLayer],
+      ['versa', 'VersaTiles Colorful', versaLayer],
+      ['nlsc', 'NLSC 台灣電子地圖', nlscLayer],
+      ['gsi', 'GSI 日本地理院地圖', gsiLayer],
+    ];
+    const layers: Record<string, L.Layer> = {};
+    for (const [, label, layer] of layerDefs) layers[label] = layer;
+    // Unknown / retired keys (e.g. the removed 'carto') fall back to OSM.
+    (layerDefs.find(([key]) => key === savedLayer) ?? layerDefs[0])[2].addTo(map);
+    const layersControl = L.control.layers(layers, undefined, { position: 'topright', collapsed: true }).addTo(map);
+    // Switching to a layer for the first time pays DNS + TLS to a new host
+    // before the first tile can arrive. The picker expands on hover, so
+    // warm every layer's host at that moment: by the time the user clicks,
+    // the connection is already open. Vector styles are fetched too so
+    // MapLibre reads them from the HTTP cache. Done on hover rather than at
+    // startup because unused preconnected sockets are closed within seconds.
+    const warmLayerHosts = () => {
+      const origins = new Set<string>();
+      const styleUrls: string[] = [];
+      for (const [, , layer] of layerDefs) {
+        const opts = (layer as any).options ?? {};
+        if (typeof opts.style === 'string') {
+          styleUrls.push(opts.style);
+          origins.add(new URL(opts.style).origin);
+        }
+        const tpl: string | undefined = (layer as any)._url;
+        if (tpl) {
+          const subs: string[] = typeof opts.subdomains === 'string'
+            ? opts.subdomains.split('') : (opts.subdomains ?? ['']);
+          for (const sub of subs) {
+            try { origins.add(new URL(tpl.replace('{s}', sub)).origin); } catch { /* skip */ }
+          }
+        }
+      }
+      for (const origin of origins) {
+        const link = document.createElement('link');
+        link.rel = 'preconnect';
+        link.href = origin;
+        link.crossOrigin = 'anonymous';
+        document.head.appendChild(link);
+      }
+      for (const url of styleUrls) void fetch(url).catch(() => { /* offline */ });
     };
-    const initialKey =
-      savedLayer === 'carto' ? 'CartoDB Voyager' :
-      savedLayer === 'esri' ? 'ESRI 衛星 / Satellite' :
-      savedLayer === 'liberty' ? 'OpenFreeMap Liberty' :
-      savedLayer === 'nlsc' ? 'NLSC 台灣電子地圖' :
-      savedLayer === 'gsi' ? 'GSI 日本地理院地圖' :
-      'OSM';
-    layers[initialKey].addTo(map);
-    L.control.layers(layers, undefined, { position: 'topright', collapsed: true }).addTo(map);
+    layersControl.getContainer()?.addEventListener('mouseenter', warmLayerHosts, { once: true });
     map.on('baselayerchange', (e: any) => {
       try {
-        const key: string =
-          e?.name === 'CartoDB Voyager' ? 'carto' :
-          e?.name === 'ESRI 衛星 / Satellite' ? 'esri' :
-          e?.name === 'OpenFreeMap Liberty' ? 'liberty' :
-          e?.name === 'NLSC 台灣電子地圖' ? 'nlsc' :
-          e?.name === 'GSI 日本地理院地圖' ? 'gsi' : 'osm';
+        const key = layerDefs.find(([, label]) => label === e?.name)?.[0] ?? 'osm';
         localStorage.setItem('locwarp.tile_layer', key);
       } catch { /* storage disabled */ }
     });
@@ -2466,7 +2522,7 @@ const MapView: React.FC<MapViewProps> = ({
               if (reverseGeo.address && reverseGeo.key === key) return;
               setReverseGeo({ loading: true, address: null, error: null, key });
               try {
-                const res = await reverseGeocode(contextMenu.lat, contextMenu.lng);
+                const res = await reverseGeocode(contextMenu.lat, contextMenu.lng, true);
                 const name = res?.display_name || res?.address || null;
                 if (name) {
                   setReverseGeo({ loading: false, address: name, error: null, key });

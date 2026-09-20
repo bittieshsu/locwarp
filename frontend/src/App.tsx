@@ -335,7 +335,7 @@ const App: React.FC = () => {
     let cancelled = false
     const tid = setTimeout(() => {
       lastLookedUpPosRef.current = { lat: pos.lat, lng: pos.lng }
-      // Three independent services (Nominatim, TimezoneDB, Open-Meteo).
+      // Three independent services (Photon, TimezoneDB, Open-Meteo).
       // Fire in parallel so one outage doesn't freeze the other two for
       // a 10s timeout each time the position changes.
       void api.reverseGeocode(pos.lat, pos.lng).then((geoRes: any) => {
@@ -713,7 +713,7 @@ const App: React.FC = () => {
     // the field blank as before.
     ;(async () => {
       try {
-        const geo = await api.reverseGeocode(lat, lng)
+        const geo = await api.reverseGeocode(lat, lng, true)
         if (!geo) {
           setAddBmDialog((prev) => prev ? { ...prev, nameResolving: false } : prev)
           return

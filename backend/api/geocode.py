@@ -46,8 +46,8 @@ async def search_address(
 
 
 @router.get("/reverse", response_model=GeocodingResult | None)
-async def reverse_geocode(lat: float, lng: float):
-    return await geocoding_service.reverse(lat, lng)
+async def reverse_geocode(lat: float, lng: float, precise: bool = False):
+    return await geocoding_service.reverse(lat, lng, precise)
 
 
 class ProviderPref(BaseModel):

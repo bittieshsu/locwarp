@@ -262,8 +262,11 @@ export const searchAddress = (q: string) => {
   }
   return request<any[]>('GET', `/api/geocode/search?${params.toString()}`)
 }
-export const reverseGeocode = (lat: number, lng: number) =>
-  request<any>('GET', `/api/geocode/reverse?lat=${lat}&lng=${lng}`)
+// The backend caches reverse results per ~100 m cell. Pass precise=true
+// when the label names a saved spot or answers "what's here", so a
+// neighbouring lookup's name is never reused.
+export const reverseGeocode = (lat: number, lng: number, precise = false) =>
+  request<any>('GET', `/api/geocode/reverse?lat=${lat}&lng=${lng}${precise ? '&precise=true' : ''}`)
 
 // Mirror the desktop's geocode provider choice to the backend so the phone
 // page (which can't read renderer localStorage) honours the same provider.
