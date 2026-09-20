@@ -47,7 +47,7 @@
 1. Download the latest `LocWarp Setup x.y.z.exe` from [Releases](https://github.com/keezxc1223/locwarp/releases) and install it.
 2. Install iTunes or Apple Devices on the PC. Either one provides the Apple USB driver.
 3. Connect the iPhone over USB and tap "Trust This Computer" on the phone.
-4. On the iPhone, turn on Settings → Privacy & Security → Developer Mode. If the option is missing, LocWarp can reveal it with one click once connected.
+4. On the iPhone, turn on Settings → Privacy & Security → Developer Mode. If the option is missing, connect in LocWarp and press "Enable Developer Mode" in its Settings tab to make it appear.
 5. Launch LocWarp (it asks for administrator rights) and right-click the map to teleport.
 
 Each step is covered in detail under [Installation and setup](#installation-and-setup). If your antivirus quarantines the backend program, add the install folder to its exclusion list and reinstall.
@@ -206,7 +206,7 @@ Before first use, connect the iPhone with a USB cable. The phone asks "Trust Thi
 
 On the iPhone: **Settings → Privacy & Security → Developer Mode → On**. The device asks to restart, then asks you to confirm once more.
 
-On iOS 16 and later this option is hidden by default. Once LocWarp is connected and sees that Developer Mode is off, it shows a "**Reveal Developer Mode option**" button. After pressing it:
+On iOS 16 and later this option is hidden by default. Once LocWarp is connected, open the **Settings** tab at the top and press "**Enable Developer Mode**". After pressing it:
 
 1. Fully close the Settings app on the iPhone.
 2. Reopen Settings → Privacy & Security and scroll down to find Developer Mode.
