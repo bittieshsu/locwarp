@@ -85,7 +85,7 @@ Each step is covered in detail under [Installation and setup](#installation-and-
 | Mode | Description |
 | --- | --- |
 | **Teleport** | Jump straight to a coordinate |
-| **Navigate** | Walk, run, or drive along real roads from the current position to a destination |
+| **Navigate** | Travel along real roads at walking, cycling, or driving speed from the current position to a destination |
 | **Multi-point Route** | Visit waypoints in order, optionally pausing at each stop (random 5 to 20 seconds by default). Laps: 0 runs the route once, N runs N laps, blank loops forever |
 | **Flower Farmer** | Circle around each waypoint. Radius, segments per circle (3 to 20), circles per point (0.5 is a half circle), total rounds, and the wait before and after each point are all adjustable and saved. Travel between points by walking or teleporting. The panel shows a live estimate of the total run time, and a dropped connection reconnects and resumes on its own |
 | **Random Walk** | Wander randomly inside a radius, with adjustable pauses between legs |
@@ -95,7 +95,7 @@ Multi-point Route has a **point-to-point jump** option that teleports from waypo
 
 ### Speed control
 
-- Three presets: walking 5, running 10, driving 40 km/h.
+- Three presets: walking 10.8, cycling 19.8, driving 60 km/h.
 - Enter any fixed speed, or a min to max range (for example 40 to 80 km/h) that is re-rolled for every leg to mimic real traffic.
 - Change the speed while moving and press "Apply new speed". Movement continues from the current position at the new speed, with no restart.
 - The last speed you picked is remembered for the next launch. A countdown banner appears above the map while paused at a stop.
