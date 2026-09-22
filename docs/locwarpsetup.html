@@ -3,248 +3,303 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>LocWarp · 安裝教學</title>
-<meta name="description" content="LocWarp 的安裝流程與 iOS 前置設定完整教學。">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,600;12..96,700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-<style>:root{--ink:#0e0f10;--ink-soft:#15161a;--ink-rule:#26262b;--ink-rule-2:#3a3a41;--paper:#ece7df;--paper-mute:#b5b1a9;--paper-dim:#7a7771;--paper-faint:#4e4c47;--signal:#e8a33d;--signal-ink:#1a1206;--warn:#d4a24c;--danger:#d96b5c;--ok:#a8c090;--serif:'Bricolage Grotesque','Helvetica Neue',Arial,sans-serif;--mono:'JetBrains Mono',ui-monospace,'SF Mono',Menlo,monospace;--sans:-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica Neue',Arial,'PingFang TC','Microsoft JhengHei',sans-serif}*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}html{scroll-behavior:smooth;scroll-padding-top:80px;background:var(--ink)}body{font-family:var(--sans);font-size:16px;line-height:1.7;color:var(--paper);background:var(--ink);-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;font-feature-settings:'ss01','cv11';min-height:100dvh;overflow-x:hidden}::selection{background:var(--signal);color:var(--signal-ink)}:focus-visible{outline:2px solid var(--signal);outline-offset:3px;border-radius:2px}.topbar{position:sticky;top:0;z-index:50;background:var(--ink);border-bottom:1px solid var(--ink-rule)}.topbar-inner{max-width:1180px;margin:0 auto;padding:16px 32px;display:flex;align-items:center;justify-content:space-between;gap:24px}.brand{display:inline-flex;align-items:baseline;gap:12px;text-decoration:none;color:var(--paper);font-family:var(--mono);font-size:13px;letter-spacing:0.02em}.brand b{font-family:var(--serif);font-weight:700;font-size:18px;letter-spacing:-0.01em;color:var(--paper)}.brand .brand-tag{color:var(--paper-dim);font-size:11.5px;letter-spacing:0.12em;text-transform:uppercase}.topnav{display:flex;gap:22px;align-items:center;font-family:var(--mono);font-size:12.5px}.topnav a{color:var(--paper-mute);text-decoration:none;padding:6px 0;border-bottom:1px solid transparent;transition:color 160ms ease,border-color 160ms ease}.topnav a:hover{color:var(--paper);border-bottom-color:var(--paper-dim)}.topnav a.tn-cta{color:var(--signal)}.topnav a.tn-cta:hover{border-bottom-color:var(--signal)}.layout{max-width:1180px;margin:0 auto;padding:0 32px 140px}.hero{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:64px;align-items:end;padding:88px 0 56px;border-bottom:1px solid var(--ink-rule)}.hero-meta-top{font-family:var(--mono);font-size:11.5px;letter-spacing:0.16em;text-transform:uppercase;color:var(--paper-dim);margin-bottom:28px;display:flex;gap:18px;flex-wrap:wrap}.hero-meta-top span{display:inline-flex;align-items:baseline;gap:8px}.hero-meta-top span::before{content:'';display:inline-block;width:5px;height:5px;background:var(--signal);transform:translateY(-2px)}.hero-meta-top span+span::before{background:var(--paper-dim)}.hero h1{font-family:var(--serif);font-weight:600;font-size:clamp(40px,6.2vw,76px);line-height:1.02;letter-spacing:-0.028em;color:var(--paper);text-wrap:balance}.hero h1 i{font-style:italic;font-weight:500;color:var(--paper-mute)}.hero-side{padding-bottom:6px}.hero-side p{font-size:15.5px;line-height:1.65;color:var(--paper-mute);max-width:44ch;margin-bottom:24px}.hero-facts{display:grid;grid-template-columns:auto 1fr;gap:6px 18px;font-family:var(--mono);font-size:12px;color:var(--paper-dim);padding-top:22px;border-top:1px solid var(--ink-rule)}.hero-facts dt{color:var(--paper-faint);letter-spacing:0.08em;text-transform:uppercase}.hero-facts dd{color:var(--paper-mute)}.index{display:grid;grid-template-columns:minmax(0,1fr);gap:0;margin:0;border-bottom:1px solid var(--ink-rule)}.index a{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:24px;padding:32px 0;text-decoration:none;color:var(--paper);transition:background 180ms ease}.index a:hover{background:var(--ink-soft)}.index .idx-num{font-family:var(--mono);font-size:12px;letter-spacing:0.14em;color:var(--signal);align-self:start;padding-top:4px}.index .idx-body{display:block}.index .idx-title{display:block;font-family:var(--serif);font-weight:600;font-size:22px;letter-spacing:-0.015em;color:var(--paper);line-height:1.15;margin-bottom:6px}.index .idx-body .idx-sub{display:block;font-family:var(--mono);font-size:11.5px;letter-spacing:0.1em;text-transform:uppercase;color:var(--paper-dim)}.index .idx-arrow{color:var(--paper-dim);transition:transform 220ms cubic-bezier(.2,.8,.2,1),color 180ms ease}.index a:hover .idx-arrow{color:var(--signal);transform:translateX(6px)}.section{padding:96px 0 0;scroll-margin-top:80px}.chapter-head{display:grid;grid-template-columns:minmax(0,4fr) minmax(0,8fr);gap:48px;align-items:start;padding-bottom:56px;border-bottom:1px solid var(--ink-rule);margin-bottom:64px}.chapter-mark{font-family:var(--mono);font-size:12.5px;letter-spacing:0.18em;text-transform:uppercase;color:var(--paper-dim);padding-top:14px;position:relative}.chapter-mark::before{content:'';display:block;width:44px;height:2px;background:var(--signal);margin-bottom:18px}.chapter-mark b{display:block;color:var(--paper);font-family:var(--serif);font-size:54px;font-weight:700;letter-spacing:-0.02em;line-height:1;margin-top:6px;font-style:italic}.chapter-body h2{font-family:var(--serif);font-weight:600;font-size:clamp(30px,3.6vw,44px);line-height:1.1;letter-spacing:-0.02em;color:var(--paper);margin-bottom:20px;text-wrap:balance}.chapter-body .lede{font-size:17px;line-height:1.6;color:var(--paper-mute);max-width:58ch}.proc{display:grid;gap:0}.step{display:grid;grid-template-columns:minmax(0,4fr) minmax(0,8fr);gap:48px;padding:40px 0;border-top:1px solid var(--ink-rule);align-items:start}.step:last-child{border-bottom:1px solid var(--ink-rule)}.step-aside{position:sticky;top:96px;align-self:start}.step-num{font-family:var(--mono);font-size:12px;letter-spacing:0.18em;color:var(--paper-dim);margin-bottom:10px}.step-num b{color:var(--signal)}.step-heading{font-family:var(--serif);font-weight:600;font-size:26px;letter-spacing:-0.018em;line-height:1.15;color:var(--paper);margin-bottom:10px;text-wrap:balance}.step-kicker{font-family:var(--mono);font-size:11.5px;letter-spacing:0.06em;color:var(--paper-faint);line-height:1.5}.step-body{font-size:15.5px;line-height:1.72;color:var(--paper-mute);max-width:62ch}.step-body>*+*{margin-top:14px}.step-body strong{color:var(--paper);font-weight:600}.step-body a:not(.btn){color:var(--paper);text-decoration:none;background-image:linear-gradient(var(--signal),var(--signal));background-size:100% 1px;background-position:0 100%;background-repeat:no-repeat;padding-bottom:2px;transition:background-size 180ms ease,color 180ms ease}.step-body a:not(.btn):hover{color:var(--signal)}.step-body code{font-family:var(--mono);font-size:12.5px;background:var(--ink-soft);padding:2px 7px;border:1px solid var(--ink-rule);color:var(--paper);white-space:nowrap}.step-body ul{list-style:none;padding:0;margin-top:14px}.step-body li{position:relative;padding-left:22px;margin-bottom:6px}.step-body li::before{content:'/';position:absolute;left:0;color:var(--signal);font-family:var(--mono);font-weight:500}.note{margin:20px 0 0;padding:18px 0 18px 22px;border-top:1px solid var(--ink-rule);border-bottom:1px solid var(--ink-rule);display:grid;grid-template-columns:auto 1fr;gap:16px;align-items:start;font-size:14.5px;line-height:1.65}.note-label{font-family:var(--mono);font-size:10.5px;letter-spacing:0.18em;text-transform:uppercase;color:var(--paper-dim);align-self:center;white-space:nowrap}.note-label b{color:var(--paper)}.note--warn .note-label b{color:var(--warn)}.note--danger .note-label b{color:var(--danger)}.note--ok .note-label b{color:var(--ok)}.note-body{color:var(--paper)}.note-body strong{color:var(--paper);font-weight:600}.note-body .note-title{display:block;font-weight:600;margin-bottom:4px;color:var(--paper)}.note-body a:not(.btn){color:var(--paper);text-decoration:underline;text-decoration-color:var(--signal);text-underline-offset:3px}.note-body a:not(.btn):hover{color:var(--signal)}.path{display:inline-flex;align-items:center;flex-wrap:wrap;gap:10px;padding:10px 14px;background:var(--ink-soft);border:1px solid var(--ink-rule);font-family:var(--mono);font-size:13px;color:var(--paper);margin-top:4px}.path .sep{color:var(--paper-faint)}.btn-row{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;padding:13px 22px;min-height:46px;font-family:inherit;font-weight:600;font-size:14.5px;letter-spacing:0;text-transform:none;text-decoration:none;border:1px solid transparent;border-radius:2px;transition:transform 120ms ease,background-color 160ms ease,color 160ms ease,border-color 160ms ease;white-space:nowrap;cursor:pointer;-webkit-tap-highlight-color:transparent}.btn svg{width:16px;height:16px;flex-shrink:0;stroke-width:2}.btn-primary{background:#f4f1ea;color:#000000;border-color:#f4f1ea;font-weight:700}.btn-primary:hover{background:#ffffff;border-color:#ffffff}.btn-primary:active{transform:translateY(1px)}.btn-secondary{background:transparent;color:#ece7df;border-color:#4a4a51;font-weight:600}.btn-secondary:hover{background:#1a1b20;border-color:#8a8680;color:#ffffff}.btn-secondary:active{transform:translateY(1px)}.btn-signal{background:#e8a33d;color:#1a1206;border-color:#e8a33d;font-weight:700}.btn-signal:hover{background:#f2b252;border-color:#f2b252;color:#0a0500}.btn-signal:active{transform:translateY(1px)}.btn-sm{padding:10px 16px;min-height:40px;font-size:13px}.shortcut{margin-top:28px;padding:24px;background:var(--ink-soft);border:1px solid var(--ink-rule);display:grid;grid-template-columns:auto 1fr auto;gap:24px;align-items:center}.shortcut-tag{font-family:var(--mono);font-size:10.5px;letter-spacing:0.18em;text-transform:uppercase;color:var(--signal);padding:4px 8px;border:1px solid var(--signal);align-self:start;white-space:nowrap}.shortcut-text h4{font-family:var(--serif);font-weight:600;font-size:19px;letter-spacing:-0.01em;color:var(--paper);margin-bottom:4px}.shortcut-text p{font-size:13.5px;color:var(--paper-mute);line-height:1.55}.log-header{display:grid;grid-template-columns:1fr auto;gap:20px;font-family:var(--mono);font-size:11.5px;letter-spacing:0.14em;text-transform:uppercase;color:var(--paper-dim);padding-bottom:14px;border-bottom:1px solid var(--ink-rule-2);margin-bottom:0}.log-header .right{color:var(--paper-faint)}.log .step{padding:36px 0}.log .step-aside{position:static}.colophon{margin-top:120px;padding:48px 0 0;border-top:1px solid var(--ink-rule);display:grid;grid-template-columns:minmax(0,4fr) minmax(0,8fr);gap:48px;align-items:start}.colophon-mark{font-family:var(--mono);font-size:11.5px;letter-spacing:0.14em;text-transform:uppercase;color:var(--paper-dim)}.colophon-text{max-width:58ch;color:var(--paper-mute);font-size:14px;line-height:1.7}.colophon-text p+p{margin-top:10px}.colophon-text a{color:var(--paper);text-decoration:underline;text-decoration-color:var(--paper-faint);text-underline-offset:3px}.colophon-text a:hover{text-decoration-color:var(--signal);color:var(--signal)}.colophon-links{margin-top:18px;display:flex;flex-wrap:wrap;gap:14px 28px;font-family:var(--mono);font-size:12px;letter-spacing:0.06em}.colophon-links a{color:var(--paper);text-decoration:none;border-bottom:1px solid var(--paper-faint);padding-bottom:2px}.colophon-links a:hover{border-bottom-color:var(--signal);color:var(--signal)}@media (max-width:960px){.hero{grid-template-columns:1fr;gap:36px;padding:64px 0 44px}.hero h1{font-size:clamp(36px,9vw,56px)}.chapter-head{grid-template-columns:1fr;gap:24px;padding-bottom:40px;margin-bottom:44px}.chapter-mark b{font-size:44px}.step{grid-template-columns:1fr;gap:18px;padding:32px 0}.step-aside{position:static}.index{grid-template-columns:1fr}.index a+a{border-left:0;border-top:1px solid var(--ink-rule);padding-left:0}.index a:first-child{padding-right:0}.index a{padding:28px 0}.colophon{grid-template-columns:1fr;gap:20px}}@media (max-width:640px){.topbar-inner{padding:14px 20px;gap:14px}.brand b{font-size:16px}.brand .brand-tag{display:none}.topnav{gap:16px;font-size:12px}.topnav a:not(.tn-cta){display:none}.layout{padding:0 20px 96px}.hero{padding:44px 0 36px}.hero h1{font-size:clamp(32px,10vw,44px);letter-spacing:-0.024em}.hero-side p{font-size:15px}.section{padding:72px 0 0}.chapter-body h2{font-size:28px}.chapter-body .lede{font-size:15.5px}.step-heading{font-size:22px}.step-body{font-size:15px}.note{grid-template-columns:1fr;gap:8px;padding:16px 0 16px 18px}.shortcut{grid-template-columns:1fr;gap:14px;padding:20px}.btn-row{flex-direction:column;align-items:stretch}.btn{width:100%}.colophon{margin-top:88px;padding-top:40px}}@media (max-width:400px){.hero h1{font-size:36px}.step-heading{font-size:20px}}@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:0.01ms!important;transition-duration:0.01ms!important}html{scroll-behavior:auto}}.reveal{opacity:0;transform:translateY(12px);transition:opacity 520ms cubic-bezier(.2,.8,.2,1),transform 520ms cubic-bezier(.2,.8,.2,1)}.reveal.in{opacity:1;transform:translateY(0)}</style>
+<title>LocWarp 安裝教學</title>
+<meta name="description" content="LocWarp 安裝與前置設定:下載、Apple USB driver、USB 信任、開啟開發者模式,以及常見問題。">
+<style>
+  :root{
+    --bg:#ffffff;--bg-soft:#f5f6f8;--line:#e3e5e9;
+    --ink:#17191e;--ink-soft:#40444c;--ink-mute:#6c717a;
+    --brand:#2f6df6;--brand-soft:#eaf1fe;
+    --warn-bg:#fff7e8;--warn-line:#f0d59b;--warn-ink:#7a4f00;
+    --danger-bg:#fdeeec;--danger-line:#f2b9b2;--danger-ink:#9a2f22;
+    --ok-bg:#eefaf0;--ok-line:#bfe6c6;--ok-ink:#1f6b34;
+  }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth;scroll-padding-top:72px}
+  body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang TC','Microsoft JhengHei','Noto Sans TC',sans-serif;background:var(--bg);color:var(--ink);font-size:16px;line-height:1.7;-webkit-font-smoothing:antialiased}
+  a{color:var(--brand);text-decoration:none}
+  a:hover{text-decoration:underline}
+  :focus-visible{outline:2px solid var(--brand);outline-offset:2px;border-radius:4px}
+  code{font-family:ui-monospace,'SF Mono',Consolas,monospace;font-size:.86em;background:var(--bg-soft);border:1px solid var(--line);padding:1px 6px;border-radius:5px}
+  strong{font-weight:600;color:var(--ink)}
+
+  .wrap{max-width:720px;margin:0 auto;padding:0 20px}
+
+  header.top{position:sticky;top:0;z-index:10;background:rgba(255,255,255,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+  .top-in{max-width:720px;margin:0 auto;padding:12px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+  .logo{font-weight:700;font-size:17px;color:var(--ink);display:flex;align-items:center;gap:8px}
+  .logo i{width:10px;height:10px;border-radius:3px;background:var(--brand)}
+  .top nav{display:flex;gap:18px;font-size:14px}
+  .top nav a{color:var(--ink-mute)}
+  .top nav a:hover{color:var(--ink);text-decoration:none}
+
+  .hero{padding:56px 0 32px;border-bottom:1px solid var(--line)}
+  .hero h1{font-size:clamp(28px,5vw,38px);font-weight:700;letter-spacing:-.02em;line-height:1.2;margin-bottom:12px}
+  .hero p{color:var(--ink-mute);font-size:16.5px;max-width:52ch}
+  .req{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px}
+  .req span{font-size:13px;color:var(--ink-soft);background:var(--bg-soft);border:1px solid var(--line);padding:5px 12px;border-radius:999px}
+
+  h2.sec{font-size:22px;font-weight:700;letter-spacing:-.01em;margin:48px 0 20px}
+
+  .step{display:grid;grid-template-columns:36px 1fr;gap:14px;padding:22px 0;border-top:1px solid var(--line)}
+  .step:last-of-type{border-bottom:1px solid var(--line)}
+  .n{width:32px;height:32px;border-radius:50%;background:var(--ink);color:#fff;font-weight:700;font-size:15px;display:flex;align-items:center;justify-content:center;margin-top:2px}
+  .step h3{font-size:19px;font-weight:700;margin-bottom:8px;line-height:1.3}
+  .step p{color:var(--ink-soft);margin-bottom:10px}
+  .step p:last-child{margin-bottom:0}
+  .path{display:inline-block;background:var(--bg-soft);border:1px solid var(--line);border-radius:7px;padding:6px 12px;font-size:14.5px;font-weight:500;margin:2px 0 10px}
+  .path b{color:var(--ink-mute);font-weight:400;margin:0 6px}
+
+  .btns{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}
+  .btn{display:inline-flex;align-items:center;padding:9px 16px;border-radius:8px;font-size:14px;font-weight:600;border:1px solid var(--line);background:#fff;color:var(--ink)}
+  .btn:hover{background:var(--bg-soft);text-decoration:none}
+  .btn.pri{background:var(--brand);border-color:var(--brand);color:#fff}
+  .btn.pri:hover{background:#2159d8}
+
+  .note{border:1px solid var(--line);background:var(--bg-soft);border-radius:9px;padding:12px 14px;font-size:14.5px;margin:10px 0}
+  .note b.t{display:block;font-weight:600;margin-bottom:2px}
+  .note.warn{background:var(--warn-bg);border-color:var(--warn-line)}
+  .note.warn b.t{color:var(--warn-ink)}
+  .note.danger{background:var(--danger-bg);border-color:var(--danger-line)}
+  .note.danger b.t{color:var(--danger-ink)}
+  .note.ok{background:var(--ok-bg);border-color:var(--ok-line)}
+  .note.ok b.t{color:var(--ok-ink)}
+  .note ul{margin:6px 0 0 18px}
+  .note li{margin-bottom:4px;color:var(--ink-soft)}
+  .flag{display:block;font-family:ui-monospace,'SF Mono',Consolas,monospace;font-size:14px;background:#fff;border:1px solid var(--line);border-radius:6px;padding:8px 12px;margin:8px 0;user-select:all}
+
+  table{width:100%;border-collapse:collapse;font-size:14.5px}
+  th,td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+  th{background:var(--bg-soft);font-weight:600;width:32%;color:var(--ink)}
+  td{color:var(--ink-soft)}
+  tr:last-child th,tr:last-child td{border-bottom:0}
+  .tbl{border:1px solid var(--line);border-radius:9px;overflow:hidden}
+
+  .done{margin-top:28px;padding:20px 22px;background:var(--brand-soft);border-radius:10px;font-size:15px;color:var(--ink-soft)}
+  .done b{display:block;font-size:17px;color:var(--ink);margin-bottom:4px}
+
+  h4{font-size:16px;font-weight:700;margin:26px 0 8px}
+  p.lead{color:var(--ink-mute);font-size:15px;margin-bottom:6px}
+  ul.plain{margin:4px 0 0 18px;color:var(--ink-soft);font-size:15px}
+  ul.plain li{margin-bottom:5px}
+
+  footer{margin:56px 0 48px;padding-top:24px;border-top:1px solid var(--line);font-size:14px;color:var(--ink-mute);display:flex;flex-wrap:wrap;gap:6px 20px;justify-content:space-between}
+  footer a{color:var(--ink-soft)}
+
+  @media (max-width:520px){
+    .top nav a:not(.keep){display:none}
+    .hero{padding:40px 0 28px}
+    .step{grid-template-columns:30px 1fr;gap:10px}
+    .n{width:28px;height:28px;font-size:14px}
+    .btn{flex:1 1 100%;justify-content:center}
+    th{width:38%}
+  }
+</style>
 </head>
 <body>
 
-<header class="topbar">
-  <div class="topbar-inner">
-    <a class="brand" href="https://haoting.info/locwarpsetup">
-      <b>LocWarp</b>
-      <span class="brand-tag">Field Manual</span>
-    </a>
-    <nav class="topnav" aria-label="Primary">
-      <a href="https://github.com/keezxc1223/locwarp">GitHub</a>
-      <a href="https://github.com/keezxc1223/locwarp/releases">Releases</a>
-      <a class="tn-cta" href="https://github.com/keezxc1223/locwarp/issues">回報問題 &rsaquo;</a>
+<header class="top">
+  <div class="top-in">
+    <a class="logo" href="#"><i></i>LocWarp</a>
+    <nav>
+      <a href="#install">安裝</a>
+      <a href="#faq">常見問題</a>
+      <a href="#features">功能</a>
+      <a class="keep" href="https://github.com/keezxc1223/locwarp/releases">下載</a>
     </nav>
   </div>
 </header>
 
-<main class="layout">
+<main class="wrap">
 
-  <!-- ─────────── MASTHEAD ─────────── -->
-  <section class="hero reveal" aria-labelledby="title">
+  <section class="hero">
+    <h1>LocWarp 安裝教學</h1>
+    <p>在 Windows 上模擬 iPhone 定位。照下面四步做完就能用,大約 5 到 10 分鐘。</p>
+    <div class="req">
+      <span>電腦:Windows 10 / 11(64 位元)</span>
+      <span>裝置:iOS 17 以上,iOS 16 由社群維護</span>
+      <span>連線:USB,或同一個 WiFi</span>
+    </div>
+  </section>
+
+  <h2 class="sec" id="install">四個步驟</h2>
+
+  <article class="step">
+    <div class="n">1</div>
     <div>
-      <div class="hero-meta-top">
-        <span>Setup Guide / 002</span>
-        <span>Rev. 2026.04</span>
-        <span>zh-Hant</span>
+      <h3>下載並安裝 LocWarp</h3>
+      <p>抓最新版的 Windows 安裝檔,檔名像 <code>LocWarp Setup X.X.XXX.exe</code>。兩個來源內容相同。</p>
+      <div class="btns">
+        <a class="btn pri" href="https://github.com/keezxc1223/locwarp/releases/latest">GitHub Releases</a>
+        <a class="btn" href="https://drive.google.com/drive/folders/1bqVnNnSbwrVaf2GT6fEhW6R0ZlhE-fc3?usp=drive_link">Google 雲端</a>
       </div>
-      <h1 id="title">安裝 LocWarp,<br><i>開始使用</i></h1>
-    </div>
-    <aside class="hero-side">
-      <p>從下載到連上 iPhone 的前置步驟,整理成一頁清單。照順序做,平均 5 分鐘完成。</p>
-      <dl class="hero-facts">
-        <dt>時間</dt><dd>約 10 分鐘</dd>
-        <dt>裝置</dt><dd>iOS 17+</dd>
-        <dt>主機</dt><dd>Windows 10 / 11</dd>
-      </dl>
-    </aside>
-  </section>
-
-  <!-- ═════════════════ PART 1 ═════════════════ -->
-  <section id="install" class="section">
-    <header class="chapter-head reveal">
-      <div class="chapter-mark">
-        Chapter <b>01.</b>
+      <div class="note warn">
+        <b class="t">出現「Windows 已保護您的電腦」</b>
+        LocWarp 沒有做數位簽章,第一次執行會被 SmartScreen 擋。點「其他資訊」再點「仍要執行」即可。
       </div>
-      <div class="chapter-body">
-        <h2>怎麼安裝 LocWarp?</h2>
-        <p class="lede">先從 GitHub Releases 下載 LocWarp 安裝檔,接著做三個前置(Apple USB driver、USB 信任、開發者模式),缺一項都會抓不到裝置。</p>
+      <div class="note">
+        <b class="t">安裝與執行都需要系統管理員權限</b>
+        WiFi Tunnel 需要建立虛擬網路介面,所以安裝時會要求管理員權限,每次開啟也會跳 UAC。
       </div>
-    </header>
-
-    <div class="proc">
-
-      <!-- Step 1 -->
-      <article id="install-1" class="step reveal">
-        <header class="step-aside">
-          <div class="step-num">Step <b>01</b> of 04</div>
-          <h3 class="step-heading">下載並安裝 LocWarp</h3>
-          <div class="step-kicker">GitHub Releases · NSIS 安裝檔</div>
-        </header>
-        <div class="step-body">
-          <p>到 GitHub Releases 或 Google 雲端抓最新版的 Windows 安裝檔,檔名類似 <code>LocWarp Setup X.X.XX.exe</code>。兩個來源內容相同,哪邊快用哪邊。</p>
-
-          <div class="btn-row">
-            <a class="btn btn-primary" href="https://github.com/keezxc1223/locwarp/releases/latest">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true">
-                <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/>
-              </svg>
-              GitHub Releases
-            </a>
-            <a class="btn btn-signal" href="https://drive.google.com/drive/folders/1bqVnNnSbwrVaf2GT6fEhW6R0ZlhE-fc3?usp=drive_link">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true">
-                <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/>
-              </svg>
-              Google 雲端
-            </a>
-            <a class="btn btn-secondary" href="https://github.com/keezxc1223/locwarp">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true">
-                <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/>
-              </svg>
-              專案首頁
-            </a>
-          </div>
-
-          <div class="note note--warn">
-            <div class="note-label">Note <b>· Windows SmartScreen</b></div>
-            <div class="note-body">
-              <span class="note-title">出現「Windows 已保護您的電腦」?</span>
-              因為 LocWarp 未做 code-signing,第一次執行會被 SmartScreen 擋。點<strong>其他資訊</strong> &rsaquo; <strong>仍要執行</strong>即可繼續安裝。
-            </div>
-          </div>
-
-          <div class="note">
-            <div class="note-label">Note <b>· 需系統管理員</b></div>
-            <div class="note-body">
-              <span class="note-title">安裝 + 執行都需要 Admin 權限</span>
-              LocWarp 的 WiFi Tunnel 功能需要建立 TUN 網路介面,因此安裝時會要求系統管理員,執行時也會跳 UAC。
-            </div>
-          </div>
-
-          <div class="note note--danger">
-            <div class="note-label">Tip <b>· 疑難排解</b></div>
-            <div class="note-body">
-              <span class="note-title">打開程式直接閃退、黑畫面或卡住?</span>
-              通常是顯示卡驅動與硬體加速不合。對桌面的 LocWarp 捷徑按右鍵 &rsaquo; <strong>內容</strong> &rsaquo; <strong>目標</strong>,在最後面(結尾的引號之後)空一格補上:
-              <div class="path" style="margin-top:10px;user-select:all">--no-sandbox --disable-gpu --in-process-gpu</div>
-              <div style="margin-top:8px">按「確定」後再從這個捷徑開啟即可。之後若顯卡驅動更新,可到 LocWarp 設定頁把硬體加速打開試試。</div>
-            </div>
-          </div>
-        </div>
-      </article>
-
-      <!-- Step 2 -->
-      <article id="install-2" class="step reveal">
-        <header class="step-aside">
-          <div class="step-num">Step <b>02</b> of 04</div>
-          <h3 class="step-heading">安裝 Apple USB driver</h3>
-          <div class="step-kicker">三種擇一: 桌面版 iTunes / Store 版 iTunes / Apple Devices</div>
-        </header>
-        <div class="step-body">
-          <p>Windows 沒有內建 Apple 的 USB driver,必須透過下列方式之一安裝裝置驅動,之後 LocWarp 才能透過 USB 與 iPhone 溝通。</p>
-
-          <div class="note note--ok">
-            <div class="note-label">Note</div>
-            <div class="note-body">
-              <span class="note-title">三種擇一即可</span>
-              多數用戶裝<strong>傳統桌面版 iTunes</strong> 就能用。若 iTunes (桌面版或 Microsoft Store 版) 兩個都試過 LocWarp 還是抓不到 iPhone,社群回報改裝 Microsoft Store 的 <strong>「Apple Devices」</strong> 可以成功。
-            </div>
-          </div>
-
-          <div class="btn-row">
-            <a class="btn btn-primary" href="https://secure-appldnld.apple.com/itunes12/047-76416-20260302-fefe4356-211d-4da1-8bc4-058eb36ea803/iTunes64Setup.exe">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true">
-                <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/>
-              </svg>
-              桌面版 iTunes (64-bit)
-            </a>
-            <a class="btn btn-secondary" href="https://apps.microsoft.com/detail/9pb2mz1zmb1s" target="_blank" rel="noopener">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true">
-                <rect x="3" y="3" width="8" height="8" rx="1"/><rect x="13" y="3" width="8" height="8" rx="1"/><rect x="3" y="13" width="8" height="8" rx="1"/><rect x="13" y="13" width="8" height="8" rx="1"/>
-              </svg>
-              Microsoft Store iTunes
-            </a>
-            <a class="btn btn-secondary" href="https://apps.microsoft.com/detail/9np83lwlpz9k?hl=zh-TW&amp;gl=TW" target="_blank" rel="noopener">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true">
-                <rect x="3" y="3" width="8" height="8" rx="1"/><rect x="13" y="3" width="8" height="8" rx="1"/><rect x="3" y="13" width="8" height="8" rx="1"/><rect x="13" y="13" width="8" height="8" rx="1"/>
-              </svg>
-              Apple Devices (備案)
-            </a>
-          </div>
-        </div>
-      </article>
-
-      <!-- Step 3 -->
-      <article id="install-3" class="step reveal">
-        <header class="step-aside">
-          <div class="step-num">Step <b>03</b> of 04</div>
-          <h3 class="step-heading">USB 連接並信任電腦</h3>
-          <div class="step-kicker">建立 pair record</div>
-        </header>
-        <div class="step-body">
-          <p>使用<strong>原廠 / 有資料傳輸能力</strong>的 Lightning / USB-C 線把 iPhone 接上電腦。iPhone 螢幕會跳出提示:</p>
-
-          <div class="note">
-            <div class="note-label">Prompt <b>· iOS</b></div>
-            <div class="note-body">
-              <span class="note-title">「要信任這部電腦嗎?」</span>
-              點<strong>信任</strong>,輸入 iPhone 解鎖密碼完成配對。這會在電腦端建立 pair record,後續 LocWarp 就可透過該配對與裝置通訊。
-            </div>
-          </div>
-
-          <div class="note note--ok">
-            <div class="note-label">Tip <b>· 疑難排解</b></div>
-            <div class="note-body">
-              <span class="note-title">沒跳提示?</span>
-              檢查線材是不是充電專用線 (便宜副廠線常見);或打開 iTunes / Apple Devices 確認電腦有看到裝置。
-            </div>
-          </div>
-        </div>
-      </article>
-
-      <!-- Step 4 -->
-      <article id="install-4" class="step reveal">
-        <header class="step-aside">
-          <div class="step-num">Step <b>04</b> of 04</div>
-          <h3 class="step-heading">開啟開發者模式</h3>
-          <div class="step-kicker">iOS 16+ · 解鎖 DVT 協議</div>
-        </header>
-        <div class="step-body">
-          <p>iPhone 上前往:</p>
-          <p>
-            <span class="path">
-              設定 <span class="sep">›</span> 隱私權與安全性 <span class="sep">›</span> 開發者模式
-            </span>
-          </p>
-          <p>把開關打開,裝置會要求重啟。重啟後再次確認「啟用開發者模式?」,點<strong>啟用</strong>並輸入密碼。</p>
-
-          <div class="note note--ok">
-            <div class="note-label">Note <b>· Missing?</b></div>
-            <div class="note-body">
-              <span class="note-title">看不到「開發者模式」?</span>
-              <strong>LocWarp v0.2.61 起</strong> 在狀態列內建一顆「顯示開發者模式選項」按鈕。連上 iPhone 後如果這顆出現,按一下,回 iPhone 把「設定」完全關掉再重開,設定 → 隱私權與安全性 往下拉,開發者模式選項就會出現。
-            </div>
-          </div>
-        </div>
-      </article>
-
-    </div>
-  </section>
-  <!-- ─────────── COLOPHON ─────────── -->
-  <section class="colophon">
-    <div class="colophon-mark">Colophon</div>
-    <div class="colophon-text">
-      <p>本頁感謝社群使用者回饋整理而成。</p>
-      <div class="colophon-links">
-        <a href="https://github.com/keezxc1223/locwarp">LocWarp on GitHub</a>
-        <a href="https://github.com/keezxc1223/locwarp/releases">Releases</a>
-        <a href="https://github.com/keezxc1223/locwarp/issues">Issues</a>
+      <div class="note warn">
+        <b class="t">防毒軟體把後端程式隔離</b>
+        開啟後若提示後端程式不存在,是防毒把未簽章的 exe 刪了。先把安裝資料夾加入防毒的排除清單,再重新安裝一次。
       </div>
     </div>
-  </section>
+  </article>
+
+  <article class="step">
+    <div class="n">2</div>
+    <div>
+      <h3>安裝 Apple USB driver</h3>
+      <p>Windows 沒有內建 Apple 的 USB driver。下列三種擇一安裝即可,多數人裝桌面版 iTunes 就能用。</p>
+      <div class="btns">
+        <a class="btn pri" href="https://secure-appldnld.apple.com/itunes12/047-76416-20260302-fefe4356-211d-4da1-8bc4-058eb36ea803/iTunes64Setup.exe">桌面版 iTunes(64-bit)</a>
+        <a class="btn" href="https://apps.microsoft.com/detail/9pb2mz1zmb1s" target="_blank" rel="noopener">Store 版 iTunes</a>
+        <a class="btn" href="https://apps.microsoft.com/detail/9np83lwlpz9k?hl=zh-TW&amp;gl=TW" target="_blank" rel="noopener">Apple Devices</a>
+      </div>
+      <div class="note ok">
+        <b class="t">iTunes 抓不到 iPhone</b>
+        社群回報改裝 Microsoft Store 的 Apple Devices 可以成功。
+      </div>
+    </div>
+  </article>
+
+  <article class="step">
+    <div class="n">3</div>
+    <div>
+      <h3>USB 連接並信任電腦</h3>
+      <p>用<strong>原廠或支援資料傳輸</strong>的 USB 線接上 iPhone。iPhone 跳出「要信任這部電腦嗎?」時點「信任」並輸入密碼。</p>
+      <div class="note warn">
+        <b class="t">沒跳提示、或電腦抓不到手機</b>
+        先打開 iTunes 或 Apple Devices 看有沒有偵測到裝置。連 iTunes 都看不到,多半是線或孔的問題:
+        <ul>
+          <li>很多副廠線、附贈線只能充電,沒有資料腳位。換原廠線或標示支援資料傳輸的線。</li>
+          <li>接頭鬆動或進灰塵會時好時壞,換線並清乾淨兩端。</li>
+          <li>改插主機板後方的 USB 孔,避開前面板、延長線、USB hub 與螢幕上的孔。</li>
+          <li>USB 3.x(藍色孔)對 iPhone 有時反而不穩,試試 USB 2.0(黑色孔),反過來也試。</li>
+          <li>iPhone 要解鎖並停在桌面。之前誤按「不信任」的話,到「設定 › 一般 › 移轉或重置 iPhone › 重置 › 重置位置與隱私權」,重插就會再問一次。</li>
+          <li>最後才試 iPhone 與電腦各重開一次。</li>
+        </ul>
+      </div>
+    </div>
+  </article>
+
+  <article class="step">
+    <div class="n">4</div>
+    <div>
+      <h3>開啟開發者模式</h3>
+      <p>在 iPhone 上前往:</p>
+      <div class="path">設定<b>›</b>隱私權與安全性<b>›</b>開發者模式</div>
+      <p>打開開關,iPhone 會要求重新啟動。重啟後再確認一次「啟用」並輸入密碼。</p>
+      <div class="note ok">
+        <b class="t">設定裡找不到「開發者模式」</b>
+        iOS 16 以上預設不顯示這個選項。用 USB 把 iPhone 連上 LocWarp,到程式上方的「<strong>設定</strong>」頁按「<strong>開啟開發者模式</strong>」。接著在 iPhone 上把「設定」App 完全關掉再重開,進到「隱私權與安全性」往下拉就會看到。
+      </div>
+      <div class="note">
+        <b class="t">iOS 17 以上還需要 Developer Disk Image</b>
+        LocWarp 只會檢查,不會自動掛載。若提示「未偵測到 DDI」,用 Xcode、愛思助手、3uTools 或 pymobiledevice3 CLI 任一工具幫 iPhone 掛一次即可。
+      </div>
+    </div>
+  </article>
+
+  <div class="done">
+    <b>完成</b>
+    開啟 LocWarp、USB 接上 iPhone,程式會自動抓到裝置,在地圖上按右鍵就能瞬移。要改用無線時,到「連線」頁啟動 WiFi Tunnel,成功後即可拔掉 USB(需 iOS 17 以上,且先用 USB 配對過一次)。
+  </div>
+
+  <h2 class="sec" id="faq">常見問題</h2>
+
+  <div class="note danger">
+    <b class="t">打開程式直接閃退、黑畫面或卡住</b>
+    通常是顯示卡驅動與硬體加速不合。對桌面的 LocWarp 捷徑按右鍵 › 內容 › 目標,在最後面(結尾引號之後)空一格補上:
+    <span class="flag">--no-sandbox --disable-gpu --in-process-gpu</span>
+    按「確定」後再從這個捷徑開啟。
+  </div>
+
+  <div class="tbl">
+    <table>
+      <tr><th>畫面殘影或黑畫面</th><td>到「設定」頁關閉硬體加速,重啟程式。</td></tr>
+      <tr><th>Tunnel 啟動後連不上</th><td>確認以系統管理員身分啟動,暫時關閉 VPN 或第三方防火牆再試。</td></tr>
+      <tr><th>WiFi 自動偵測找不到裝置</th><td>確認在同一個 WiFi 網段,路由器沒開裝置隔離(AP isolation)。可改為手動輸入 IP。</td></tr>
+      <tr><th>WiFi Tunnel 螢幕暗掉就斷線</th><td>把 iPhone 的「自動鎖定」設為永不並接上充電,或在 LocWarp 開啟「螢幕暗掉維持連線」。</td></tr>
+      <tr><th>No such service: dtservicehub</th><td>DDI 沒掛上。依步驟 4 掛載;仍失敗時先關閉開發者模式、重開機、再開啟,然後重新掛載。</td></tr>
+      <tr><th>國旗或地名沒出現</th><td>這兩項來自免費公共服務,偶爾會暫時無回應,稍後再瞬移一次即可。</td></tr>
+    </table>
+  </div>
+  <p class="lead" style="margin-top:12px">回報問題請附上 iOS 版本、連線方式,以及 <code>~/.locwarp/logs/backend.log</code>。狀態列的「Log 資料夾」按鈕可以直接開啟該資料夾。</p>
+
+  <h2 class="sec" id="features">功能簡介</h2>
+
+  <h4>移動模式</h4>
+  <div class="tbl">
+    <table>
+      <tr><th>瞬間移動</th><td>直接跳到指定座標。</td></tr>
+      <tr><th>導航移動</th><td>沿真實道路前往目的地,走路、腳踏車、開車三檔速度。</td></tr>
+      <tr><th>多點路徑</th><td>依序經過多個點,每站可停留(預設隨機 5 到 20 秒)。圈數設 0 跑一趟,設 N 繞 N 圈,留空無限循環。可勾「點對點跳躍」改成逐點瞬移。</td></tr>
+      <tr><th>花農專用</th><td>在每個路徑點周圍繞圈。繞圈距離、段數、圈數、輪數、前後等待都可自訂,點與點之間可走過去或瞬移。</td></tr>
+      <tr><th>隨機漫步</th><td>在指定半徑內隨機漫遊,每段停頓可調。</td></tr>
+      <tr><th>搖桿操控</th><td>以方向與力度即時操控,支援 WASD 與方向鍵。</td></tr>
+    </table>
+  </div>
+
+  <h4>速度</h4>
+  <ul class="plain">
+    <li>三檔預設:走路 10.8、腳踏車 19.8、開車 60 km/h。</li>
+    <li>可輸入任意固定速度,或最小到最大的隨機範圍,每段路重新抽一次。</li>
+    <li>移動中可以改速度後「套用新速度」,不用停下重來。</li>
+  </ul>
+
+  <h4>路徑來源</h4>
+  <p class="lead">四個免費免註冊的引擎可切換:OSRM 公用 demo(預設)、OSRM FOSSGIS、Valhalla、BRouter。任一引擎失敗時該段自動改走直線,也可直接勾「使用直線路徑」。多點路徑有「最佳順序」一鍵算出最短走訪順序。</p>
+
+  <h4>連線</h4>
+  <ul class="plain">
+    <li><strong>USB</strong>:插上自動連線,iPhone 鎖定螢幕不受影響。拔除約 4 秒內偵測,重插自動恢復。</li>
+    <li><strong>WiFi Tunnel</strong>(iOS 17 以上):自動偵測用 mDNS,找不到再掃描區網。連過的 IP 會記住,可「釘選」裝置自動連線與重試。</li>
+    <li><strong>多裝置</strong>:最多同時三台,所有動作同步套用,隨機漫步走一樣的路線。</li>
+  </ul>
+
+  <h4>地圖與座標</h4>
+  <ul class="plain">
+    <li>圖層:OSM、Google 圖磚(測試)、ESRI 街道與衛星、OpenFreeMap Liberty / Bright / Positron、VersaTiles、NLSC 台灣電子地圖、GSI 日本地理院地圖。全部免 API key。</li>
+    <li>狀態列顯示目前模擬位置的國旗、地名、天氣與溫度,跨時區時標出時差。</li>
+    <li>座標收藏:自動帶入地名與國旗,可分類、排序、拖曳,JSON 與 GPX 匯入匯出,數萬筆顯示在地圖上也不卡。</li>
+    <li>路線可分類儲存並直接載入,支援 GPX 與 JSON。</li>
+    <li>地址搜尋:免費來源(OpenStreetMap 或 Photon),或自備 Google Geocoding 金鑰。</li>
+    <li>使用者圖示可換成 6 組內建角色或上傳自己的 PNG。</li>
+  </ul>
+
+  <h4>手機網頁操控</h4>
+  <p class="lead">按狀態列的「手機操控」會顯示區網網址與 6 位數 PIN,手機瀏覽器輸入後可瞬移、導航、搜尋地址、輸入座標、停止與還原。手機要與電腦在同一個 WiFi,電腦防火牆放行 8777 port。</p>
+
+  <h4>其他</h4>
+  <ul class="plain">
+    <li><strong>一鍵還原</strong>清除虛擬定位。「停止」只結束移動,定位仍保留,要恢復真實 GPS 請按還原。</li>
+    <li>Cooldown 依瞬移距離自動計算冷卻時間。</li>
+    <li>介面可在繁體中文與 English 之間切換。</li>
+    <li>所有資料存在 <code>~/.locwarp/</code>,重新安裝不會遺失。</li>
+  </ul>
+
+  <h4>技術組成</h4>
+  <div class="tbl">
+    <table>
+      <tr><th>前端</th><td>Electron 44、React 19、TypeScript、Vite、MapLibre GL 6</td></tr>
+      <tr><th>後端</th><td>Python 3.13、FastAPI、pymobiledevice3 11</td></tr>
+      <tr><th>WiFi Tunnel</th><td>pymobiledevice3 TCP tunnel 搭配 pytun-pmd3 建立 TUN 介面,wintun.dll 已打包</td></tr>
+      <tr><th>支援版本</th><td>iOS 17 以上為主要支援,已驗證到 iOS 27.0。iOS 16.x 由社群維護,iOS 15 以下不支援。</td></tr>
+    </table>
+  </div>
+
+  <footer>
+    <div>
+      <a href="https://github.com/keezxc1223/locwarp">GitHub</a> ·
+      <a href="https://github.com/keezxc1223/locwarp/releases">Releases</a> ·
+      <a href="https://github.com/keezxc1223/locwarp/issues">Issues</a>
+    </div>
+    <div>本頁感謝社群使用者回饋整理而成 · 2026.09</div>
+  </footer>
 
 </main>
-
-<script>
-// Reveal on scroll. Minimal, no scroll-bar gimmick.
-const io = new IntersectionObserver((entries) => {
-  entries.forEach(e => {
-    if (e.isIntersecting) {
-      e.target.classList.add('in');
-      io.unobserve(e.target);
-    }
-  });
-}, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
-document.querySelectorAll('.reveal').forEach(el => io.observe(el));
-</script>
-
 </body>
 </html>
