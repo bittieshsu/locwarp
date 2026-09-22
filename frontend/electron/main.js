@@ -31,18 +31,87 @@ function writeRenderModePref(mode) {
   }
 }
 
+// Boot-health marker: counts launches in hardware mode that never
+// reached a loaded renderer. Some Win 11 machines (bad/old GPU drivers,
+// VMs, remote desktop) crash the GPU process so early that no Electron
+// event fires and users had to add --no-sandbox --disable-gpu
+// --in-process-gpu to the shortcut by hand. If two consecutive boots
+// fail we flip the saved pref to software rendering automatically.
+const BOOT_STATE_FILE = path.join(app.getPath('userData'), 'boot-state.json')
+const BOOT_FAIL_THRESHOLD = 2
+
+function readBootState() {
+  try {
+    const parsed = JSON.parse(fs.readFileSync(BOOT_STATE_FILE, 'utf8'))
+    return { pending: Number(parsed && parsed.pending) || 0 }
+  } catch { return { pending: 0 } }
+}
+
+function writeBootState(state) {
+  try {
+    fs.mkdirSync(path.dirname(BOOT_STATE_FILE), { recursive: true })
+    fs.writeFileSync(BOOT_STATE_FILE, JSON.stringify(state), 'utf8')
+  } catch (e) {
+    console.error('[boot-state] failed to save:', e && e.message)
+  }
+}
+
+let effectiveRenderMode = 'hardware'
+let gpuFallbackTriggered = false
+
 if (process.platform === 'win32') {
   const winBuild = parseInt((os.release() || '0.0.0').split('.')[2] || '0', 10)
   const isWin10 = winBuild > 0 && winBuild < 22000
-  const saved = readRenderModePref()
+  let saved = readRenderModePref()
   // Effective mode: saved pref wins; otherwise Win 10 → software, Win 11 → hardware.
-  const mode = saved || (isWin10 ? 'software' : 'hardware')
+  let mode = saved || (isWin10 ? 'software' : 'hardware')
+  if (mode === 'hardware') {
+    const boot = readBootState()
+    if (boot.pending >= BOOT_FAIL_THRESHOLD) {
+      console.warn(`[render-mode] ${boot.pending} consecutive failed boots in hardware mode, falling back to software rendering`)
+      writeRenderModePref('software')
+      writeBootState({ pending: 0 })
+      mode = 'software'
+    } else {
+      writeBootState({ pending: boot.pending + 1 })
+    }
+  }
+  effectiveRenderMode = mode
   if (mode === 'software') {
     app.disableHardwareAcceleration()
     app.commandLine.appendSwitch('no-sandbox')
     app.commandLine.appendSwitch('in-process-gpu')
   }
 }
+
+// Called once the renderer has actually loaded: this boot succeeded.
+function markBootHealthy() {
+  if (process.platform !== 'win32') return
+  writeBootState({ pending: 0 })
+}
+
+// GPU or renderer process died while on hardware acceleration: switch
+// to software rendering and relaunch, instead of leaving the user with
+// a black / frozen window and a shortcut-flag workaround.
+function fallbackToSoftwareAndRelaunch(why) {
+  if (process.platform !== 'win32' || effectiveRenderMode !== 'hardware') return
+  if (gpuFallbackTriggered) return
+  gpuFallbackTriggered = true
+  console.warn('[render-mode] ' + why + ', switching to software rendering and relaunching')
+  writeRenderModePref('software')
+  writeBootState({ pending: 0 })
+  try { stopBackend() } catch {}
+  app.relaunch()
+  app.exit(0)
+}
+
+app.on('child-process-gone', (_e, details) => {
+  if (!details || details.type !== 'GPU') return
+  const bad = ['crashed', 'killed', 'launch-failed', 'abnormal-exit', 'integrity-failure']
+  if (bad.includes(details.reason)) {
+    fallbackToSoftwareAndRelaunch('GPU process gone (' + details.reason + ')')
+  }
+})
 
 // Locate-PC over IPC: shells out to PowerShell + System.Device.Location
 // (the Windows Location API). This taps Windows' built-in Wi-Fi
@@ -389,6 +458,13 @@ async function createWindow() {
   // Show the window once the first frame is painted. Combined with
   // backgroundColor above, this eliminates the blank/white boot state.
   mainWindow.once('ready-to-show', () => { mainWindow.show() })
+  mainWindow.webContents.once('did-finish-load', markBootHealthy)
+  mainWindow.webContents.on('render-process-gone', (_e, details) => {
+    const bad = ['crashed', 'launch-failed', 'abnormal-exit', 'integrity-failure']
+    if (details && bad.includes(details.reason)) {
+      fallbackToSoftwareAndRelaunch('renderer gone (' + details.reason + ')')
+    }
+  })
 
   // Open target="_blank" / external links in the user's default browser
   mainWindow.webContents.setWindowOpenHandler(({ url }) => {

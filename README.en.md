@@ -245,6 +245,7 @@ With the Wi-Fi Tunnel, set Settings → Display & Brightness → Auto-Lock to **
 | `No such service: com.apple.instruments.dtservicehub`, or "No DDI detected" | Mount the DDI as described in [step 4](#4-mount-the-developer-disk-image-ios-17). If it still fails, turn Developer Mode off, reboot, turn it back on, and mount again |
 | Developer Mode is missing from the iPhone Settings | With the device connected, open the Settings tab at the top of LocWarp and press "Enable Developer Mode", then close and reopen the iPhone Settings app as described in [step 3](#3-turn-on-developer-mode). If the button does not work, use the [sideloading fallback](#appendix-revealing-developer-mode-by-sideloading) |
 | Ghosting or a black window | Turn off hardware acceleration in the Settings tab |
+| App crashes right at launch | Newer builds fall back to software rendering and relaunch on their own; if it still crashes, right-click the shortcut › Properties › Target and append `--no-sandbox --disable-gpu --in-process-gpu` |
 | The flag or place name does not appear | Both come from free public services that are sometimes briefly unresponsive. Teleport again a little later |
 
 When reporting a problem, include the iOS version, the connection type, and `~/.locwarp/logs/backend.log`.

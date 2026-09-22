@@ -245,6 +245,7 @@ iOS 17 以上需要 iPhone 上掛有 Personalized DDI 才能模擬定位。LocWa
 | `No such service: com.apple.instruments.dtservicehub`,或提示「未偵測到 DDI」 | 依[步驟 4](#4-掛載-developer-disk-imageios-17)掛載 DDI。仍失敗時,先把開發者模式關閉、重開機、再次開啟,然後重新掛載 |
 | iPhone 設定裡找不到開發者模式 | LocWarp 連上裝置後,到上方的「設定」頁按「開啟開發者模式」,再依[步驟 3](#3-開啟開發者模式)關掉並重開 iPhone 的「設定」App。按鈕無效時改用[側載方式](#附錄用側載方式讓開發者模式出現) |
 | 畫面殘影或黑畫面 | 在「設定」頁關閉硬體加速 |
+| 打開程式直接閃退 | 新版會自動改為軟體渲染並重啟;仍閃退的話,對捷徑按右鍵 › 內容 › 目標,結尾補上 `--no-sandbox --disable-gpu --in-process-gpu` |
 | 國旗或地名沒有出現 | 這兩項來自免費的公共服務,偶爾會暫時無回應,稍後再瞬移一次即可 |
 
 回報問題時請附上 iOS 版本、連線方式,以及 `~/.locwarp/logs/backend.log`。

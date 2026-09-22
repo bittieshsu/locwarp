@@ -108,6 +108,16 @@
               LocWarp 的 WiFi Tunnel 功能需要建立 TUN 網路介面,因此安裝時會要求系統管理員,執行時也會跳 UAC。
             </div>
           </div>
+
+          <div class="note note--danger">
+            <div class="note-label">Tip <b>· 疑難排解</b></div>
+            <div class="note-body">
+              <span class="note-title">打開程式直接閃退、黑畫面或卡住?</span>
+              通常是顯示卡驅動與硬體加速不合。對桌面的 LocWarp 捷徑按右鍵 &rsaquo; <strong>內容</strong> &rsaquo; <strong>目標</strong>,在最後面(結尾的引號之後)空一格補上:
+              <div class="path" style="margin-top:10px;user-select:all">--no-sandbox --disable-gpu --in-process-gpu</div>
+              <div style="margin-top:8px">按「確定」後再從這個捷徑開啟即可。之後若顯卡驅動更新,可到 LocWarp 設定頁把硬體加速打開試試。</div>
+            </div>
+          </div>
         </div>
       </article>
 
